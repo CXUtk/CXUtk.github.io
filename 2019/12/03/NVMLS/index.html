@@ -19,14 +19,14 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://yoursite.com').hostname,
+    hostname: new URL('http://mrskirt.cc').hostname,
     root: '/',
     scheme: 'Pisces',
     version: '7.6.0',
     exturl: false,
     sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
     mediumzoom: false,
@@ -39,8 +39,8 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
@@ -49,14 +49,14 @@
 <meta name="keywords" content="动态规划,字符串哈希,AC自动机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[ICPC NAQ2019] Problem E: NVMLS">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;03&#x2F;NVMLS&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;03&#x2F;NVMLS&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
 <meta property="og:description" content="题意给你$N$个大写字母组成的单词和一串大写非元音字母所组成的字符串（$L\leq 3\times 10^5$）。已知字符串$L$是由给出单词的非元音字母组成的，求将这个字符串还原回正常单词以后，元音字母数量最多的一个原串。数据保证$\sum_{i&#x3D;0}^{n} len(s_i) \leq 10^5$。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-12-04T23:25:23.321Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/03/NVMLS/">
+<link rel="canonical" href="http://mrskirt.cc/2019/12/03/NVMLS/">
 
 
 <script id="page-configurations">
@@ -154,9 +154,34 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -180,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/NVMLS/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2019/12/03/NVMLS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -267,12 +292,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/03/NAQ19L/" rel="prev" title="[ICPC NAQ2019] Problem L: Traveling Merchant">
-      <i class="fa fa-chevron-left"></i> [ICPC NAQ2019] Problem L: Traveling Merchant
+    <a href="/2019/12/03/hello-world/" rel="prev" title="你好，世界">
+      <i class="fa fa-chevron-left"></i> 你好，世界
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/12/04/CF1238E/" rel="next" title="[CF1238E] Keyboard Purchase">
-      [CF1238E] Keyboard Purchase <i class="fa fa-chevron-right"></i>
+    <a href="/2019/12/03/NAQ19L/" rel="next" title="[ICPC NAQ2019] Problem L: Traveling Merchant">
+      [ICPC NAQ2019] Problem L: Traveling Merchant <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -287,6 +312,15 @@
 
           </div>
           
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
 
         </div>
           
@@ -348,6 +382,9 @@
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/CXUtk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CXUtk" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/36956" title="洛谷 → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;36956" rel="noopener" target="_blank"><i class="fa fa-fw fa-code"></i>洛谷</a>
       </span>
   </div>
 
@@ -420,6 +457,8 @@
 
 
 
+
+  <script src="/js/local-search.js"></script>
 
 
 

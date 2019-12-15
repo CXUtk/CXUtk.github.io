@@ -19,14 +19,14 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://yoursite.com').hostname,
+    hostname: new URL('http://mrskirt.cc').hostname,
     root: '/',
     scheme: 'Pisces',
     version: '7.6.0',
     exturl: false,
     sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
     mediumzoom: false,
@@ -39,8 +39,8 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
@@ -49,19 +49,19 @@
 <meta name="keywords" content="数据结构,扫描线,组合数学,树状数组">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[SDOI2009] 虔诚的墓主人">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;10&#x2F;SDOI09Grave&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;10&#x2F;SDOI09Grave&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
 <meta property="og:description" content="题意一个$N \times M (N, M \leq 10^9)$的地图上有$W (W \leq 10^5)$棵树。对于图上没有树的点，如果在这个点上下左右都至少有$k (1 \leq k \leq 10)$个点，那么它会贡献${L\choose{k}} *  {R\choose{k}} * {U\choose{k}}* {D\choose{k}}$点虔诚度，问这个地图上所有虔诚度之和模$2147">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;uploads&#x2F;sdoi09grave1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;uploads&#x2F;sdoi09grave3.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;uploads&#x2F;sdoi09grave4.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;uploads&#x2F;sdoi09grave5.gif">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave1.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave3.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave4.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave5.gif">
 <meta property="og:updated_time" content="2019-12-10T19:53:26.221Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;uploads&#x2F;sdoi09grave1.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave1.png">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/10/SDOI09Grave/">
+<link rel="canonical" href="http://mrskirt.cc/2019/12/10/SDOI09Grave/">
 
 
 <script id="page-configurations">
@@ -159,9 +159,34 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -185,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/SDOI09Grave/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2019/12/10/SDOI09Grave/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -284,6 +309,15 @@
 
           </div>
           
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
 
         </div>
           
@@ -345,6 +379,9 @@
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/CXUtk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CXUtk" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/36956" title="洛谷 → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;36956" rel="noopener" target="_blank"><i class="fa fa-fw fa-code"></i>洛谷</a>
       </span>
   </div>
 
@@ -417,6 +454,8 @@
 
 
 
+
+  <script src="/js/local-search.js"></script>
 
 
 

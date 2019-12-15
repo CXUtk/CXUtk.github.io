@@ -19,14 +19,14 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://yoursite.com').hostname,
+    hostname: new URL('http://mrskirt.cc').hostname,
     root: '/',
     scheme: 'Pisces',
     version: '7.6.0',
     exturl: false,
     sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
     mediumzoom: false,
@@ -39,8 +39,8 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
@@ -49,14 +49,14 @@
 <meta name="keywords" content="二分法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二分法杂谈">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;09&#x2F;binary-search&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;09&#x2F;binary-search&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
 <meta property="og:description" content="学算法一年了，做了很多题，但是对于二分法这块一直不是很明白。 有时候遇到二分答案的问题经常要调好长时间才能写对，有些时候就是看别人二分是怎么写的就照抄，但是并不清楚为什么这么写是对的。今天总结了一下二分法的几种情况以及它们的思路。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-12-10T13:45:29.819Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/09/binary-search/">
+<link rel="canonical" href="http://mrskirt.cc/2019/12/09/binary-search/">
 
 
 <script id="page-configurations">
@@ -154,9 +154,34 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -180,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/09/binary-search/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2019/12/09/binary-search/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -292,6 +317,15 @@
 
           </div>
           
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
 
         </div>
           
@@ -353,6 +387,9 @@
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/CXUtk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CXUtk" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/36956" title="洛谷 → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;36956" rel="noopener" target="_blank"><i class="fa fa-fw fa-code"></i>洛谷</a>
       </span>
   </div>
 
@@ -425,6 +462,8 @@
 
 
 
+
+  <script src="/js/local-search.js"></script>
 
 
 
