@@ -45,14 +45,20 @@
   };
 </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Skirt&#39;s Blog">
-<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;categories&#x2F;%E7%AE%97%E6%B3%95&#x2F;%E4%BA%8C%E5%88%86%E6%B3%95&#x2F;index.html">
+  <meta name="description" content="题意一开始有一个整数$n(n\leq 10^{15})$，你可以执行以下操作$k(k\leq 10^4)$次：把$n$替换成$n$的任意一个约数(包括$1$和$n$)，假设每个约数都有相同概率被选中。现在问你$k$次操作后剩下这个数的期望值是多少。">
+<meta name="keywords" content="概率期望,动态规划,数论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[CF1097D] Makoto and a Blackboard">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;25&#x2F;CF1097D&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
+<meta property="og:description" content="题意一开始有一个整数$n(n\leq 10^{15})$，你可以执行以下操作$k(k\leq 10^4)$次：把$n$替换成$n$的任意一个约数(包括$1$和$n$)，假设每个约数都有相同概率被选中。现在问你$k$次操作后剩下这个数的期望值是多少。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;cf1097d1.png">
+<meta property="og:updated_time" content="2019-12-26T02:02:07.941Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;cf1097d1.png">
 
-<link rel="canonical" href="http://mrskirt.cc/categories/%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%88%86%E6%B3%95/">
+<link rel="canonical" href="http://mrskirt.cc/2019/12/25/CF1097D/">
 
 
 <script id="page-configurations">
@@ -60,13 +66,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>分类: 二分法 | Skirt's Blog</title>
+  <title>[CF1097D] Makoto and a Blackboard | Skirt's Blog</title>
   
 
 
@@ -196,54 +202,134 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">二分法
-          <small>分类</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2019/12/25/CF1097D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DXTsT">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skirt's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [CF1097D] Makoto and a Blackboard
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-25 19:33:37 / 修改时间：21:02:07" itemprop="dateCreated datePublished" datetime="2019-12-25T19:33:37-05:00">2019-12-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index">
+                    <span itemprop="name">题解</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/Codeforces/" itemprop="url" rel="index">
+                    <span itemprop="name">Codeforces</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
+        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>一开始有一个整数$n(n\leq 10^{15})$，你可以执行以下操作$k(k\leq 10^4)$次：把$n$替换成$n$的任意一个约数(包括$1$和$n$)，假设每个约数都有相同概率被选中。现在问你$k$次操作后剩下这个数的期望值是多少。</p>
+<a id="more"></a>
+
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>我们知道期望公式为$\sum{x*p(x)}$，在这道题中，由于$x$的范围是离散且确定的，我们只需要知道每个$x$出现的概率就行了。</p>
+<p>我们可以画一张图来看看转移的过程，以$6$为例：<br><img src="/uploads/cf1097d1.png" width="30%" height="30%"></img><br>我们可以得出几个有用的信息：</p>
+<ul>
+<li>图中所有节点都为原数$n$的约数</li>
+<li>每个节点只会转移到小于等于它的数</li>
+<li>因为$k$有限，这个流程可以直接模拟</li>
+</ul>
+<p>于是我们就可以用动态规划，令$f(i, x)$为第$i$轮时，得到数字为$x$的概率，可得：<br>$$<br>    f(i + 1, y) = f(i + 1, y) + f(i, x) * \frac{1}{|d(x)|} (y \in d(x))<br>$$<br>于是这题就解决了……</p>
+<p>但是等等，这个玩意复杂度是多少呢？我们花$O(\sqrt{n})$预处理出来约数，约数个数大约是$O(\log{n})$，都在时间范围内。状态数量是$O(k\log{n})$，转移是$O(\log{n})$，合在一起$O(k\log^2{n})$但是交上去会T掉，为什么呢？</p>
+<p>因为因数个数虽然是$O(\log{n})$，但是常数巨大，一般来说一个数的质因数分解可以表示为$\prod_k{(p_k^{\alpha_k})}$那么它会有$\prod_k{(\alpha_k+1})$个因数。</p>
+<p>那么假如我给出$n=2^{20}\times3^{20}$，足足会有$21\times21=441$个因数，那么$10^4\times441^2=1.6*10^9$这不T到天上去？<br>那么接下来就要引出我写这篇博客的意义了，首先把我们刚刚得到的递推式优化一下。<br>$$<br>    f(i+1, y) = \sum_{ky|n} \frac{f(i, ky)}{|d(ky)|}<br>$$<br>而形如$g(n) = \sum_{d|n} f(d)$这类函数给我们的提示就是它很有可能是积性的，由于地方太小就不写证明了。当$f(i, x)$是积性函数的时候，$f(i,x)=\prod_{k} f(i, p_k^{\alpha_k})$。于是我们可以分别计算对于$n$的每个质因数的$f(i, p^{\alpha_k})$，然后把他们乘起来。此时时间复杂度为$O(k\sum{\alpha_i^2})$，此前为$O(k\prod{(\alpha_i+1)})$，对于$2^{20}\times3^{20}$来说，只需要$10^4\times800=8\times10^6$，是一个巨大的提升。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><pre><code class="cpp"></code></pre>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-12-09T20:51:27-05:00"
-              content="2019-12-09">
-          12-09
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A6%82%E7%8E%87%E6%9C%9F%E6%9C%9B/" rel="tag"># 概率期望</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/12/09/binary-search/" itemprop="url">
-            <span itemprop="name">二分法杂谈</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/10/SDOI09Grave/" rel="prev" title="[SDOI2009] 虔诚的墓主人">
+      <i class="fa fa-chevron-left"></i> [SDOI2009] 虔诚的墓主人
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
           
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
 
         </div>
           
@@ -268,6 +354,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题意"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时间复杂度"><span class="nav-number">3.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考代码"><span class="nav-number">4.</span> <span class="nav-text">参考代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -419,6 +506,54 @@
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
