@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://mrskirt.cc').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="质因数分解接着上一章的素数判定，这一章我们要讨论质因数分解的算法。  算数基本定理，又称唯一分解定理：每个大于$1$的自然数，都可以写成质数次方的积，且这些质数从小到大排列后，仅存在这一种分解方式。  换句话说，每个$n&amp;gt;1$，都有唯一一种分解方式$\prod_{k} p_k^{\alpha_k} &#x3D; n$。">
+<meta name="keywords" content="数论,搜索,随机化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="质因数分解">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;31&#x2F;prime-factor&#x2F;index.html">
+<meta property="og:site_name" content="Skirt&#39;s Blog">
+<meta property="og:description" content="质因数分解接着上一章的素数判定，这一章我们要讨论质因数分解的算法。  算数基本定理，又称唯一分解定理：每个大于$1$的自然数，都可以写成质数次方的积，且这些质数从小到大排列后，仅存在这一种分解方式。  换句话说，每个$n&amp;gt;1$，都有唯一一种分解方式$\prod_{k} p_k^{\alpha_k} &#x3D; n$。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;rho_cycle.jpg">
+<meta property="og:updated_time" content="2020-01-01T20:12:10.467Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;rho_cycle.jpg">
+
+<link rel="canonical" href="http://mrskirt.cc/2019/12/31/prime-factor/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>质因数分解 | Skirt's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Skirt's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">The secret of being a bore is to tell everything</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2019/12/31/prime-factor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DXTsT">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skirt's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          质因数分解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-31 09:59:20" itemprop="dateCreated datePublished" datetime="2019-12-31T09:59:20-05:00">2019-12-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-01 15:12:10" itemprop="dateModified" datetime="2020-01-01T15:12:10-05:00">2020-01-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E6%95%B0%E8%AE%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">数论</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="质因数分解"><a href="#质因数分解" class="headerlink" title="质因数分解"></a>质因数分解</h1><p>接着上一章的素数判定，这一章我们要讨论质因数分解的算法。</p>
+<blockquote>
+<p>算数基本定理，又称唯一分解定理：每个大于$1$的自然数，都可以写成质数次方的积，且这些质数从小到大排列后，仅存在这一种分解方式。</p>
+</blockquote>
+<p>换句话说，每个$n&gt;1$，都有唯一一种分解方式$\prod_{k} p_k^{\alpha_k} = n$。</p>
+<a id="more"></a>
+<h2 id="朴素方法"><a href="#朴素方法" class="headerlink" title="朴素方法"></a>朴素方法</h2><p>对于所有$p|n$，我们不断试除就可以了，与质数判定同理，我们不需要试超过$\sqrt{n}$的质数，因为这样的质数一定就是$n$本身，于是有代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>&lt;ll, ll&gt; factorize(ll x) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">map</span>&lt;ll, ll&gt; pcnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (ll i = <span class="number">2</span>; i * i &lt;= x; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (x % i == <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">while</span> (x % i == <span class="number">0</span>) cnt++, x /= i;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            pcnt[i] = cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 注意要把最后一个质数包括进去</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">1</span>) pcnt[x] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> pcnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>注意我们可以直接在$n$上面做除法，而不用真的遍历到$\sqrt{n}$，因为发现一个质因数就可以把数据规模缩小，可以用哈希表把$log$消掉。这样，在最坏情况下这个算法时间复杂度是$O(\sqrt{n})$。当然，如果先把所有质数预处理出来，可以达到$O(\sqrt{\frac{n}{\log{n}}})$。</p>
+<h2 id="Pollard’s-rho-算法"><a href="#Pollard’s-rho-算法" class="headerlink" title="Pollard’s rho 算法"></a>Pollard’s rho 算法</h2><h3 id="生日悖论-Birthday-Paradox"><a href="#生日悖论-Birthday-Paradox" class="headerlink" title="生日悖论 (Birthday Paradox)"></a>生日悖论 (Birthday Paradox)</h3><p>在介绍Pollard’s rho算法之前，我想先介绍一个概率学中的小问题：一个房间中要有多少人，出现两个人生日相同的概率大于等于$50\%$？</p>
+<p>如果你是第一次看到这个问题，那么答案可能会让你惊讶：只需要$23$个人。这不是玄学，而是通过严谨的数学推理得出的，实验也证明了这一点。那么这个结果是如何得到的呢？</p>
+<p>假设一年有$365$天，且每个人的生日是独立且均匀分布的，那么第一个人在第$x$天生日的概率是$\frac{1}{365}$，我们记为$Pr\{b_1=x\}$。那么现在来了第二个人，它的生日在第$x$天的概率$Pr\{b_2=x\}$也是$\frac{1}{365}$，此时两个人都在第$x$天的概率是<br>$$<br>Pr\{b_1=x \textbf{ and } b_2=x\} = \frac{1}{365^2}<br>$$<br>但是这个$x$我们可以取$365$个，于是两个人生日都在同一天的概率就是<br>$$<br>Pr\{b_1=b_2\} = 365\times \frac{1}{365^2} = \frac{1}{365}<br>$$<br>知道了任意两人生日相同的概率，就可以扩展到$k$个人中的两人生日相同的期望值，由于$k$个人中选$2$个，所以有:<br>$$<br>E = {k\choose2} \frac{1}{365} = \frac{k(k-1)}{730}<br>$$<br>所以期望存在至少一对生日相同的两人只需要$k=28$，$50\%$概率的计算由于比较复杂就不放上来了，但是可以推测，这个值一定会比$28$少。</p>
+<p>于是我们可以知道，生日碰撞的概率是$O(\sqrt{n})$级别的，而不是我们下意识的$O(n)$。</p>
+<h3 id="随机化算法"><a href="#随机化算法" class="headerlink" title="随机化算法"></a>随机化算法</h3><p>Pollard’s rho 算法的基本原理就是从待分解数$x$中任意找出两个数$a, b$，计算$gcd(|a - b|, x)$，当他们的$gcd$不是$1$的时候，我们就找到了$x$的一个因数。为什么是取两个呢？这就要利用我们上面说到的生日悖论了，因为只取一个$a$，此时$a|x$的几率很小，但是如果我们取两个数做差，出现$|a-b|$与$x$有公约数的几率就大很多了。事实上Pollard’s rho算法输出$x$的一个约数$p$的期望运行时间是$O(\sqrt{p})$。</p>
+<p>那么如何选取这两个数呢？我们可以随机选取，但是Pollard’s rho算法使用的是一种二次剩余系的伪随机数生成函数<br>$$<br>f(x) = x^2 + c \pmod{n}<br>$$<br>为什么用这个函数呢？我没有在算法导论上看到具体说明，但是这个函数应该是对于Pollard’s rho算法的时间效率最优的函数。由于这个函数最后一定会出现循环，长得像希腊字母$\rho$，因此得名。</p>
+<p><img src="/uploads/rho_cycle.jpg" width="30%" height="30%"></img><br>正因为这个性质，在出现环的时候我们也需要及时的退出并且换下一个随机数。我们可以使用Floyd判圈算法来判断是否出现了环，大意就是两个指针一个走一步一个走两步，如果有环那么两个指针一定会碰上，于是我们就可以有代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">f</span><span class="params">(ll x, ll c, ll p)</span> </span>&#123; <span class="keyword">return</span> (modmul(x, x, p) + c) % p; &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    ll c = mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    ll l = f(mt() % x, c, x), r = f(l, c, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// l是慢的指针，r是快的</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (l != r) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        ll g = __gcd(<span class="built_in">abs</span>(l - r), x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        l = f(l, c, x), r = f(f(r, c, x), c, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+<p>如果$x$是个质数，那么我们可以用上一章的Miller–Rabin算法提前判掉，这样整个算法的期望时间复杂度就是$O(n^{0.25}\log{n})$了。</p>
+<h3 id="常数优化"><a href="#常数优化" class="headerlink" title="常数优化"></a>常数优化</h3><p>上面的写法虽然时间复杂度是正确的，但是对于这道题还是不够的：<br>例题：<a href="https://www.luogu.com.cn/problem/P4718" target="_blank" rel="noopener">【模板】Pollard-Rho算法</a></p>
+<p>我们还需要一些常数优化，Pollard’s rho算法的瓶颈就在于需要多少次才能得到一个约数$p$，以及找不到约数的时候做$gcd$的时间。前者并不好优化（玄学），但是减少$gcd$的次数却是可以做到的。</p>
+<p>一个普遍的做法就是利用倍增的思想，先走完$2^k$步以后把$|a-b|$乘积统一进行$gcd$，然后换一个起点继续增加步数。如果出现乘积为$0$就说明我们遇到环了，此时退出并寻找下一个随机数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    ll c = (ll)mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    ll s = <span class="number">0</span>, t = (ll)mt() % (x), val = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// i是步长</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>;; i &lt;&lt;= <span class="number">1</span>, s = t, val = <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">1</span>; z &lt;= i; z++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            t = f(t, c, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">            val = modmul(val, <span class="built_in">abs</span>(t - s), x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            <span class="comment">// 如果遇到环了</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!val) <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">            <span class="comment">// 为了避免步数过长导致出不来结果，所以手动设定每127步计算一次</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!(z % <span class="number">127</span>)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">                ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+              <a href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag"># 搜索</a>
+              <a href="/tags/%E9%9A%8F%E6%9C%BA%E5%8C%96/" rel="tag"># 随机化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/31/prime-test/" rel="prev" title="素数判定">
+      <i class="fa fa-chevron-left"></i> 素数判定
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#质因数分解"><span class="nav-number">1.</span> <span class="nav-text">质因数分解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#朴素方法"><span class="nav-number">1.1.</span> <span class="nav-text">朴素方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pollard’s-rho-算法"><span class="nav-number">1.2.</span> <span class="nav-text">Pollard’s rho 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生日悖论-Birthday-Paradox"><span class="nav-number">1.2.1.</span> <span class="nav-text">生日悖论 (Birthday Paradox)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机化算法"><span class="nav-number">1.2.2.</span> <span class="nav-text">随机化算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常数优化"><span class="nav-number">1.2.3.</span> <span class="nav-text">常数优化</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DXTsT"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DXTsT</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CXUtk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CXUtk" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/36956" title="洛谷 → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;36956" rel="noopener" target="_blank"><i class="fa fa-fw fa-code"></i>洛谷</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2237367067&website=www.oicqzone.com" title="QQ → tencent:&#x2F;&#x2F;AddContact&#x2F;?fromId&#x3D;45&amp;fromSubId&#x3D;1&amp;subcmd&#x3D;all&amp;uin&#x3D;2237367067&amp;website&#x3D;www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.flandre.info/" title="http:&#x2F;&#x2F;blog.flandre.info" rel="noopener" target="_blank">北海若</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DXTsT</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
