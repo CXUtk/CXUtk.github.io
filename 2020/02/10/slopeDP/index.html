@@ -45,23 +45,18 @@
   };
 </script>
 
-  <meta name="description" content="题意一个$N \times M (N, M \leq 10^9)$的地图上有$W (W \leq 10^5)$棵树。对于图上没有树的点，如果在这个点上下左右都至少有$k (1 \leq k \leq 10)$个点，那么它会贡献${L\choose{k}} *  {R\choose{k}} * {U\choose{k}}* {D\choose{k}}$点虔诚度，问这个地图上所有虔诚度之和模$2147">
-<meta name="keywords" content="数据结构,扫描线,组合数学,树状数组">
+  <meta name="description" content="题意有$n (n\leq 3\times10^5)$个任务需要被完成，你可以把这些任务全部分成任意多组，每组内的任务必须连续。同组任务会在同一时刻完成，所花时间为$\sum_{i&#x3D;l}^{r}t_i$，同时每组任务开始有一个预热时间$s$。任务$i$完成的费用为完成时间乘以$c_i$，求如何分组能让费用最小。">
+<meta name="keywords" content="动态规划,斜率DP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[SDOI2009] 虔诚的墓主人">
-<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;10&#x2F;SDOI09Grave&#x2F;index.html">
+<meta property="og:title" content="[SDOI2012]任务安排">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;02&#x2F;10&#x2F;slopeDP&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
-<meta property="og:description" content="题意一个$N \times M (N, M \leq 10^9)$的地图上有$W (W \leq 10^5)$棵树。对于图上没有树的点，如果在这个点上下左右都至少有$k (1 \leq k \leq 10)$个点，那么它会贡献${L\choose{k}} *  {R\choose{k}} * {U\choose{k}}* {D\choose{k}}$点虔诚度，问这个地图上所有虔诚度之和模$2147">
+<meta property="og:description" content="题意有$n (n\leq 3\times10^5)$个任务需要被完成，你可以把这些任务全部分成任意多组，每组内的任务必须连续。同组任务会在同一时刻完成，所花时间为$\sum_{i&#x3D;l}^{r}t_i$，同时每组任务开始有一个预热时间$s$。任务$i$完成的费用为完成时间乘以$c_i$，求如何分组能让费用最小。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave3.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave4.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave5.gif">
-<meta property="og:updated_time" content="2019-12-26T00:30:03.680Z">
+<meta property="og:updated_time" content="2020-02-11T01:13:16.184Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;uploads&#x2F;sdoi09grave1.png">
 
-<link rel="canonical" href="http://mrskirt.cc/2019/12/10/SDOI09Grave/">
+<link rel="canonical" href="http://mrskirt.cc/2020/02/10/slopeDP/">
 
 
 <script id="page-configurations">
@@ -75,7 +70,7 @@
   };
 </script>
 
-  <title>[SDOI2009] 虔诚的墓主人 | Skirt's Blog</title>
+  <title>[SDOI2012]任务安排 | Skirt's Blog</title>
   
 
 
@@ -210,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2019/12/10/SDOI09Grave/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/02/10/slopeDP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -223,7 +218,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [SDOI2009] 虔诚的墓主人
+          [SDOI2012]任务安排
         </h1>
 
         <div class="post-meta">
@@ -232,16 +227,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-12-10 13:24:27" itemprop="dateCreated datePublished" datetime="2019-12-10T13:24:27-05:00">2019-12-10</time>
+              <time title="创建时间：2020-02-10 19:21:00 / 修改时间：20:13:16" itemprop="dateCreated datePublished" datetime="2020-02-10T19:21:00-05:00">2020-02-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-25 19:30:03" itemprop="dateModified" datetime="2019-12-25T19:30:03-05:00">2019-12-25</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -278,11 +267,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>一个$N \times M (N, M \leq 10^9)$的地图上有$W (W \leq 10^5)$棵树。对于图上没有树的点，如果在这个点上下左右都至少有$k (1 \leq k \leq 10)$个点，那么它会贡献${L\choose{k}} *  {R\choose{k}} * {U\choose{k}}* {D\choose{k}}$点虔诚度，问这个地图上所有虔诚度之和模$2147483648$（有毒）的值。</p>
+        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>有$n (n\leq 3\times10^5)$个任务需要被完成，你可以把这些任务全部分成任意多组，每组内的任务必须连续。同组任务会在同一时刻完成，所花时间为$\sum_{i=l}^{r}t_i$，同时每组任务开始有一个预热时间$s$。任务$i$完成的费用为完成时间乘以$c_i$，求如何分组能让费用最小。</p>
 <a id="more"></a>
 
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>题意很清晰，但是$N,M$的规模过于庞大，普通的模拟肯定不行了。但是我们注意到$W$的值并没有很大，所以实际上能贡献虔诚度的点只有$O(W^2)$个。但是这么多点一个个统计仍然太多了，所以很自然的我们想到了用扫描线法。</p>
-<p>扫描线的统计仍然不是很直观，所以我们需要画一个图，假设我们现在的地图是这样的：<br><img src="/uploads/sdoi09grave1.png" alt="初始地图"><br>那么显然中间那个点是一个可以统计的点，如果我们记某个点$p$上方的树的数量为$U(p)$，下方为$D(p)$，左右分别为$L(p), R(p)$。那么这个点的虔诚度为${L(p)\choose{k}} *  {R(p)\choose{k}} * {U(p)\choose{k}}* {D(p)\choose{k}} = 1$。如果我们再加两个点，然后把目光集中在那根竖线上：<br><img src="/uploads/sdoi09grave3.png" alt="初始地图"><br>我们可以发现可以贡献虔诚度的点会在竖线的线段与其左右两边的横线的交点上。除此之外，我们知道在这条竖线（不包括两端）上的点$U(p)$和$D(p)$的值是完全相等的。如果我们回到那个公式，统计所有点的贡献：<br>$$<br>\begin{align}<br>S &amp; = \sum_{p} {L(p)\choose{k}} *  {R(p)\choose{k}} * {U(p)\choose{k}}* {D(p)\choose{k}}\\<br>&amp; = {U(p)\choose{k}} * {D(p)\choose{k}} * \bigg(\sum_{p} {L(p)\choose{k}} *  {R(p)\choose{k}}\bigg)<br>\end{align}<br>$$<br>根据求和公式的分配率可以推出来。这个公式意味着我们可以先得出一段竖线的${U(p)\choose{k}} * {D(p)\choose{k}}$值，然后乘以这个竖线区域所包含的所有横线的${L(p)\choose{k}} *  {R(p)\choose{k}}$就是这个区域所有的虔诚度贡献。竖线上的$U(p)$和$D(p)$可以通过从上到下以及预处理的方式求出来，现在问题在于怎么求出竖线上的横线贡献的$L(p), R(p)$：<br>$$<br>\sum_{i = l}^{r} {L(p[i])\choose{k}} *  {R(p[i])\choose{k}}<br>$$<br>可以看出这其实是一个区间查询问题，对于横线来说$L(p), R(p)$也可以通过从左到右的方式算出来，但是问题是每个横线区域与竖线的位置是密切相关的，随着向右边移动而变化：<br><img src="/uploads/sdoi09grave4.png" alt="扫描线"><br>这个时候扫描线的优势就出来了，我们可以把所有树的位置按照$x$坐标排序，如果$x$坐标相同则按照$y$坐标排序。然后我们从左到右，从上到下扫描，先统计个数，再更新横线的$L(p), R(p)$，最后把${L(p[i])\choose{k}} *  {R(p[i])\choose{k}}$放进区间查询的数据结构里面。因为这个虔诚度是可以加起来的所以区间查询用树状数组就足够了。<br><img src="/uploads/sdoi09grave5.gif" alt="动态演示"></p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>既然要把所有任务都分组，那么我们只需要知道每个任务属于哪一个组所需费用最小即可。对于任务$i$，我们想要知道从之前哪个任务分过来费用最小。于是考虑动态规划，设$f(i)$为从$1~i$分组完成，所需的最少费用，答案则是$f(n)$。但是有个启动时间$s$不好处理，怎么办呢。利用费用提前思想，每次启动机器的时间一定会给后面的任务贡献费用，那么转移方程为：<br>$$<br>f(i) = \min_{j&lt;i}\{f(j) + (F[i] - F[j]) * T[i] + s * (F[n] - F[j]) \}<br>$$</p>
 <h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>$O(W\log{W})$，分别在排序和树状数组查询上。</p>
 <h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cntX[MAXN * <span class="number">2</span>];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cntY[MAXN * <span class="number">2</span>];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> curY[MAXN * <span class="number">2</span>];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">FenwickTree tree;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> tot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;n, &amp;m);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;tot);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 组合数打表</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    C[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= tot; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        C[i][<span class="number">0</span>] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= min(i, <span class="number">10</span>); j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">            C[i][j] = (C[i - <span class="number">1</span>][j] + C[i - <span class="number">1</span>][j - <span class="number">1</span>]) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tot; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> x, y;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;x, &amp;y);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">        points[i].x = x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">        points[i].y = y;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">        discrete.add(x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">        discrete.add(y);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    discrete.discretize();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;k);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">    sort(points, points + tot);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tot; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">        cnt++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i == tot || points[i].x != points[i + <span class="number">1</span>].x) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">int</span> xx = discrete.get(points[i].x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">            <span class="comment">// 横坐标为xx的点共有多少个</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">            cntX[xx] = cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">            cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">        points[i].x = discrete.get(points[i].x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">        points[i].y = discrete.get(points[i].y);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 纵坐标为y的点共有多少个</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">        cntY[points[i].y]++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">    ll ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> curX = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tot; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 当前y坐标左边有多少个点</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line">        curX++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">51</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i &amp;&amp; points[i].x != points[i - <span class="number">1</span>].x) curX = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">52</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i != tot &amp;&amp; points[i].x == points[i + <span class="number">1</span>].x) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">53</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">int</span> l = points[i].y, r = points[i + <span class="number">1</span>].y - <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">54</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (l &lt; r) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">55</span></pre></td><td class="code"><pre><span class="line">                ll U = choose(curX, k);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">56</span></pre></td><td class="code"><pre><span class="line">                ll D = choose(cntX[points[i].x] - curX, k);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">57</span></pre></td><td class="code"><pre><span class="line">                ll sum = ((tree.getSum(r) - tree.getSum(l)) % MOD + MOD) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">58</span></pre></td><td class="code"><pre><span class="line">                ans = (ans + (sum * U % MOD) * D % MOD) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">59</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">60</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">61</span></pre></td><td class="code"><pre><span class="line">        curY[points[i].y]++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">62</span></pre></td><td class="code"><pre><span class="line">        ll now = choose(curY[points[i].y], k) *</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">63</span></pre></td><td class="code"><pre><span class="line">                 choose(cntY[points[i].y] - curY[points[i].y], k) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">64</span></pre></td><td class="code"><pre><span class="line">        ll pre =</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">65</span></pre></td><td class="code"><pre><span class="line">            ((tree.getSum(points[i].y) - tree.getSum(points[i].y - <span class="number">1</span>)) % MOD +</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">66</span></pre></td><td class="code"><pre><span class="line">             MOD) %</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">67</span></pre></td><td class="code"><pre><span class="line">            MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">68</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 注意只计算当前的总和，而不是之前的所有和</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">69</span></pre></td><td class="code"><pre><span class="line">        tree.increase(points[i].y, (now - pre + MOD) % MOD);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">70</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">71</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, ans);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">72</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">73</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
     </div>
@@ -293,10 +281,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
-              <a href="/tags/%E6%89%AB%E6%8F%8F%E7%BA%BF/" rel="tag"># 扫描线</a>
-              <a href="/tags/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6/" rel="tag"># 组合数学</a>
-              <a href="/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" rel="tag"># 树状数组</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/%E6%96%9C%E7%8E%87DP/" rel="tag"># 斜率DP</a>
           </div>
 
         
@@ -305,13 +291,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/09/binary-search/" rel="prev" title="二分法杂谈">
-      <i class="fa fa-chevron-left"></i> 二分法杂谈
+    <a href="/2020/01/20/eulersieve/" rel="prev" title="数论筛法">
+      <i class="fa fa-chevron-left"></i> 数论筛法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/12/25/CF1097D/" rel="next" title="[CF1097D] Makoto and a Blackboard">
-      [CF1097D] Makoto and a Blackboard <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
