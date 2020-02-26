@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[UVA1614] Hell on the Markets</title>
+    <url>/2020/02/26/UVA1614/</url>
+    <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你一个长度为$n(n\leq 10^5)$的序列$A$, 满足$1 \leq A_i \leq i$。求确定每个数的正负号，使得总和为$0$。</p>
+<a id="more"></a>
+
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>如果不考虑那个诡异的条件，显然我们只需要求出序列$A$的子集和是否可以等于总和的一半即可。但是子集和问题(Subset Sum)是一个著名的NPC问题，显然无法在满足时间限制的条件下得到解。</p>
+<p>于是我们必须考虑如何使用$1 \leq A_i \leq i$这个条件。我一开始的猜想就是如果序列总和$S_n$是偶数，那么在这个限制条件下一定存在一个子集$a$使得$Sum(a) = S / 2$。但是我无法证明它，也没法找到一个合适的贪心方法找出这个子集。</p>
+<p>看了别人的题解才发现这个结论需要变得更强一点：对于前缀和$S_i$，以及$1$到$S_i$的每个整数$x$，一定能从前$i$个元素中找出一个子集使得子集的和等于$x$。证明可以使用归纳法：</p>
+<p>$\textbf{Base Case: }$ 当$i = 1$的时候，我们有$a_1 = 1$，那么我们可以用$a_1$，凑出$S_1$。</p>
+<p>$\textbf{Inductive Hypothesis: }$ 假设对于整数$k$，我们有对于所有$1$到$S_k$的整数，都存在一个由前$k$个数组成的集合，使得集合的和为这个整数。</p>
+<p>那么对于整数$k+1$，新加入的这个$a_{k+1}$有$1 \leq a_{k+1} \leq k + 1$。此时$S_{k+1} = S_k + a_{k + 1}$。对于所有$x \leq S_k$，我们都可以用前$k$个元素组成。那么我们只需要考虑对于所有$S_k + 1 \leq x \leq S_k + k + 1$我们如何去组合就行了。假设我们有$a_{k+1} = y$，$S_{k + 1} = S_k + y$，那么$S_k + j (j \in [1, y])$可以由组成$S_k + j - y$的集合中，添加一个$a_{k+1}$组成。由于$y\geq j$，所以所有的$S_k + j - y$集合都可以由前$k$个元素组成，新加的元素只需要贡献$y$。因此我们有对于所有$1$到$S_{k+1}$的整数，都存在一个由前$k+1$个数组成的集合，使得集合的和为这个整数。</p>
+<p>于是此结论得证，我们一定可以凑出来$S_n/2$。但是怎样去凑呢？还是要利用这个结论。假设我们想用前$k$个元素凑出$x$，则一定有$x&lt;=S_k$，那么如果$0 \leq x-a_k \leq S_{k-1}$，则前$k-1$个元素一定能凑出$x-a_k$。由于$x\leq S_k$，所以一定满足$x-a_k \leq S_{k-1}$。如果出现$x-a_k$为负数的情况，那么一定有$x \leq S_{k-1}$，否则根据前缀和，无法出现负数。由于$x \leq S_k$一直保持，所以一定有$x\leq S_1=1$，所以$x$最后一定为$0$。</p>
+<p>至此，我们得出了一个凑出子集和等于$S_n/2$的方法，从后往前选取$a_i$，如果$a_i$的选取会超出$S_n/2$，那么就不选，由于上面的证明，最后一定选取的元素和一定为$S_n/2$。至此，这道题终于被解决了，有两个结论和两个不显然的证明，实在是难想啊。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(n)$</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[MAXN];</span></pre></td></tr><tr><td class="code"><pre><span class="line">ll pref[MAXN];</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;arr[i]);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        pref[i] = pref[i - <span class="number">1</span>] + arr[i];</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">if</span> (pref[n] &amp; <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll st = pref[n] / <span class="number">2</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n; i &gt;= <span class="number">1</span>; i--) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (st - arr[i] &gt;= <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            st -= arr[i];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            arr[i] *= <span class="number">-1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i != <span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">" "</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, arr[i] &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">1</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">while</span> (~<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n)) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        solve();</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>题解</category>
+        <category>UVA</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>贪心</tag>
+        <tag>结论</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[SDOI2012]任务安排</title>
     <url>/2020/02/10/SDOI2012Mission/</url>
     <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>有$n (n\leq 3\times10^5)$个任务需要被完成，你可以把这些任务全部分成任意多组，每组内的任务必须连续。同组任务会在同一时刻完成，所花时间为$\sum_{i=l}^{r}t_i$，同时每组任务开始有一个预热时间$s$。任务$i$完成的费用为完成时间乘以$c_i$，求如何分组能让费用最小。</p>
@@ -164,8 +190,8 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>概率期望</tag>
+        <tag>动态规划</tag>
         <tag>数论</tag>
       </tags>
   </entry>
@@ -290,8 +316,8 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>状态压缩DP</tag>
         <tag>动态规划</tag>
+        <tag>状态压缩DP</tag>
       </tags>
   </entry>
   <entry>
