@@ -53,7 +53,7 @@
 <meta property="og:site_name" content="Skirt&#39;s Blog">
 <meta property="og:description" content="多项式乘法、卷积假设我们有两个多项式$f, g$$$f(x) &#x3D; \sum_{i&#x3D;0}^n a_ix^i\\g(x) &#x3D; \sum_{i&#x3D;0}^m b_ix^i\\$$">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-22T22:50:25.070Z">
+<meta property="og:updated_time" content="2020-07-26T19:57:46.801Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://mrskirt.cc/2020/07/19/fft/">
@@ -235,7 +235,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-22 18:50:25" itemprop="dateModified" datetime="2020-07-22T18:50:25-04:00">2020-07-22</time>
+                <time title="修改时间：2020-07-26 15:57:46" itemprop="dateModified" datetime="2020-07-26T15:57:46-04:00">2020-07-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -291,6 +291,8 @@
 <p>接下来就是利用这个排序后的系数进行变换了：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Complex* data, <span class="keyword">int</span> sign)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> len = <span class="number">1</span> &lt;&lt; R;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 重新排序</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i &lt; rev[i]) swap(data[i], data[rev[i]]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 枚举一半的长度</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; len; k &lt;&lt;= <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 步长</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> step = k &lt;&lt; <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">        <span class="function">Complex <span class="title">unit</span><span class="params">(<span class="built_in">cos</span>(PI / k), sign * <span class="built_in">sin</span>(PI / k))</span></span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i += step) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">            <span class="function">Complex <span class="title">rt</span><span class="params">(<span class="number">1</span>, <span class="number">0</span>)</span></span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; k; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">                Complex t1 = data[i + j];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">                data[i + j] = t1 + rt * data[i + j + k];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">                data[i + j + k] = t1 - rt * data[i + j + k];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">                rt = rt * unit;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 
+<h1 id="傅里叶逆变换"><a href="#傅里叶逆变换" class="headerlink" title="傅里叶逆变换"></a>傅里叶逆变换</h1><p>现在我们得到了多项式$f(x)$在$x = \omega_{n}^{k}$处的点值了，那么如何快速的从这个点值得到多项式的系数呢？先考虑列出的线性方程组$Ax=b$：<br>$$<br> \left[<br>  \begin{matrix}<br>   1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1\\<br>   1 &amp; \omega_{n}^{1} &amp; \omega_{n}^{2} &amp; \cdots &amp; \omega_{n}^{(n-1)}\\<br>   1 &amp; \omega_{n}^{2} &amp; \omega_{n}^{4} &amp; \cdots &amp; \omega_{n}^{2(n-1)}\\<br>   \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\<br>   1 &amp; \omega_{n}^{(n-1)} &amp; \omega_{n}^{2(n-1)} &amp; \cdots &amp;\omega_{n}^{(n-1)^2}<br>  \end{matrix}<br>   \right]<br>   \left[<br>    \begin{matrix}<br>    a_0\\<br>    a_1\\<br>    a_2\\<br>    \vdots\\<br>    a_{n-1}<br>    \end{matrix}<br>   \right]<br>   =<br>    \left[<br>  \begin{matrix}<br>    y_0 \\<br>    y_1 \\<br>    y_2 \\<br>   \vdots \\<br>   y_{n-1} \\<br>  \end{matrix}<br>   \right]<br>$$<br>则$x =A^{-1}b$，所以只要求出大矩阵的逆与原点值向量相乘就是系数。<br>我们先来观察一下一个大小为8的矩阵：<br>$$<br> \left[<br>    \begin{matrix}<br>        1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1\\<br>        1 &amp; \omega_{n}^{1} &amp; \omega_{n}^{2} &amp; \omega_{n}^{3} &amp; \omega_{n}^{4} &amp; \omega_{n}^{5} &amp; \omega_{n}^{6} &amp; \omega_{n}^{7}\\<br>        1 &amp; \omega_{n}^{2} &amp; \omega_{n}^{4} &amp; \omega_{n}^{6} &amp; 1 &amp; \omega_{n}^{2} &amp; \omega_{n}^{4} &amp; \omega_{n}^{6}\\<br>        1 &amp; \omega_{n}^{3} &amp; \omega_{n}^{6} &amp; \omega_{n}^{1} &amp; \omega_{n}^{4} &amp; \omega_{n}^{7} &amp; \omega_{n}^{2} &amp; \omega_{n}^{5}\\<br>        1 &amp; \omega_{n}^{4} &amp; 1 &amp; \omega_{n}^{4} &amp; 1 &amp; \omega_{n}^{4} &amp; 1 &amp; \omega_{n}^{4}\\<br>        1 &amp; \omega_{n}^{5} &amp; \omega_{n}^{2} &amp; \omega_{n}^{7} &amp; \omega_{n}^{4} &amp; \omega_{n}^{1} &amp; \omega_{n}^{6} &amp; \omega_{n}^{3}\\<br>        1 &amp; \omega_{n}^{6} &amp; \omega_{n}^{4} &amp; \omega_{n}^{2} &amp; 1 &amp; \omega_{n}^{6} &amp; \omega_{n}^{4} &amp; \omega_{n}^{2}\\<br>        1 &amp; \omega_{n}^{7} &amp; \omega_{n}^{6} &amp; \omega_{n}^{5} &amp; \omega_{n}^{4} &amp; \omega_{n}^{3} &amp; \omega_{n}^{2} &amp; \omega_{n}^{1}\\<br>    \end{matrix}<br>\right]<br>$$<br>而这个大矩阵求逆以后的操作为多项式$B(x)$<br>$$<br>B(x) = \frac{1}{n} \sum_{i=0}^{n-1} y_i x^i<br>$$<br>的点值，只不过这次点值插入的是$-\omega_{n}^{k}$，其实就是相当于在复平面反着转回去的结果除以n。反着转和正着转区别不大，只是方向相反，所以我们仍然可以套用FFT的过程，只不过把单位根的转向变成负的即可。之前代码里面的<code>sign</code>参数其实就是为了逆变换的，如果<code>sign</code>为1就是正向变换，反之就是逆向变换。</p>
+
     </div>
 
     
@@ -311,7 +313,10 @@
     <a href="/2020/02/26/CF1286A/" rel="prev" title="[CF1286A] Garland">
       <i class="fa fa-chevron-left"></i> [CF1286A] Garland
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/23/CF442B/" rel="next" title="[CF442B] Andrey and Problem">
+      [CF442B] Andrey and Problem <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -358,7 +363,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多项式乘法、卷积"><span class="nav-number">1.</span> <span class="nav-text">多项式乘法、卷积</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复平面与单位根"><span class="nav-number">2.</span> <span class="nav-text">复平面与单位根</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速傅里叶变换"><span class="nav-number">3.</span> <span class="nav-text">快速傅里叶变换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化方法"><span class="nav-number">4.</span> <span class="nav-text">优化方法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多项式乘法、卷积"><span class="nav-number">1.</span> <span class="nav-text">多项式乘法、卷积</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复平面与单位根"><span class="nav-number">2.</span> <span class="nav-text">复平面与单位根</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速傅里叶变换"><span class="nav-number">3.</span> <span class="nav-text">快速傅里叶变换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化方法"><span class="nav-number">4.</span> <span class="nav-text">优化方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#傅里叶逆变换"><span class="nav-number">5.</span> <span class="nav-text">傅里叶逆变换</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -374,7 +379,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -387,7 +392,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
