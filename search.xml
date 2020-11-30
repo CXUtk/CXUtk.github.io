@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[UVA1393] Highways</title>
+    <url>/2020/11/29/UVA1393/</url>
+    <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>求一张$n\times m (n,m\leq 300)$的网格完全图里面，有多少条不同的直线是能够穿过至少两个顶点的，并且这个直线不能是水平或者竖直的。</p>
+<a id="more"></a>
+
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>先说一个比较直观的解法，既然要求直线，那么我们可以从枚举斜率和偏移入手。首先我们可以枚举任意两点，如果他们能组成符合条件的直线，假设这两个点之间的向量为$(x,y)$，那么$x,y$必定互质。否则我们就会重复记录这条直线，同时$x,y$不能有0。</p>
+<p>于是我们可以枚举所有符合条件的$(x,y)$向量，这和Trees in a Wood那道题要求的东西很像。对于所有这样的向量，我们算出它的起点可能在网格图中的哪些坐标上。首先加上向量以后不能出界，否则这样的点对不会在原图中存在，其次不能叠加，否则会重复记录。不能出界很好计算，假设这个向量是$(x,y)$，那么在$(n-x,m-y)$之内的点都不会出界。不能叠加稍微有点难度，通过画图可以看出，对于在$(n-x, m-y)$这个范围内的点，只有左下角的第一层是可以取的，之后的点一定会存在一个斜率和偏移都相同的直线，也就总共有$(n-x-x)\times (m-y-y)$个点是不能取的，把这些点减去即可。</p>
+<p>还有一个关键点是对于每一个这样的直线，一定存在一个与其中心对称的直线也符合要求，所以我们可以只用考虑射向右上角的直线，然后乘以2就是最终答案。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(nm\log{n})$那个log是来自判定互质。</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">300</span>; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= <span class="number">300</span>; j++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (<span class="built_in">std</span>::__gcd(i, j) != <span class="number">1</span>) <span class="keyword">continue</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            G[i][j] = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">int</span> a, b;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!a) <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= a; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= b; j++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span> (!G[i][j]) <span class="keyword">continue</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                n = a - i, m = b - j;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">int</span> c = <span class="built_in">std</span>::max(<span class="number">0</span>, a - i * <span class="number">2</span>) * <span class="built_in">std</span>::max(<span class="number">0</span>, b - j * <span class="number">2</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">                ans += n * m - c;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; ans * <span class="number">2</span> &lt;&lt; <span class="string">'\n'</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>题解</category>
+        <category>UVA</category>
+      </categories>
+      <tags>
+        <tag>数论</tag>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[UVA10214] Trees in a Wood</title>
     <url>/2020/11/29/UVA10214/</url>
     <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>求在一个$a\times b$的网格中，从原点看过去，能看到多少个没被遮挡的点。这题主要就是求这个数目*4+4的值除以总数。</p>
@@ -15,10 +35,11 @@
       </categories>
       <tags>
         <tag>数论</tag>
+        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
-    <title>[UVA11440] Help Tomisu </title>
+    <title>[UVA11440] Help Tomisu</title>
     <url>/2020/11/28/UVA11440/</url>
     <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你两个数$N,M (\leq 10^7, N-M\leq 10^5)$，求从2到$N!$有多少个数所有素因子都大于$M$。</p>
 <a id="more"></a>
@@ -126,7 +147,7 @@
       </tags>
   </entry>
   <entry>
-    <title>[CF1139B] Steps to One</title>
+    <title>[CF1139D] Steps to One</title>
     <url>/2020/07/26/CF1139D/</url>
     <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>一开始有一个空集合$S$，你每次可以往里放入一个从$1$到$m$的数，如果里面的数的$\gcd$为1则停下。求期望多少次后会停下。</p>
 <a id="more"></a>
@@ -243,9 +264,9 @@
         <category>UVA</category>
       </categories>
       <tags>
+        <tag>数学</tag>
         <tag>贪心</tag>
         <tag>结论</tag>
-        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -383,8 +404,8 @@
         <category>数论</category>
       </categories>
       <tags>
-        <tag>随机化</tag>
         <tag>数论</tag>
+        <tag>随机化</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -538,8 +559,8 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>状态压缩DP</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
