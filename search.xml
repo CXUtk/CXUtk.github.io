@@ -6,7 +6,7 @@
     <content><![CDATA[<h1 id="Problem-D"><a href="#Problem-D" class="headerlink" title="Problem D"></a>Problem D</h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>有$n$个关卡，每个关卡到达的时候可以有一个存档点，每次通过关卡失败可以回到最近存档点。每个关卡有$\dfrac{1}{2}$几率通过，你要构造一个期望$k$步能到终点的关卡设计方式。</p>
 <a id="more"></a>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>这题本质上是一个马尔可夫链模型，可以画出一个马尔可夫链转移模型。假设终点是$n$，我们要求的是到达第$n+1$关的期望步数。设$E[i]$为到达$i$点的期望步数，则有<br>$$<br>\begin{equation}<br>\label{T1}<br>E[n + 1] = E[n+1|n] + E[n|n+1] + \dots + E[2|1]<br>\end{equation}<br>$$<br>假设所有点都有存档点，我们从$E[2|1]$开始计算，有<br>$$<br>E[2|1] = \frac{E[2|1]}{2} + 1<br>$$<br>因为我们先要花一步闯关，然后有一半的几率回到第一关开始重新过，解得<br>$$<br>E[2|1] = 2<br>$$<br>而<br>$$<br>E[3|2] = \frac{E[3|2]}{2} + 1<br>$$<br>同理可得<br>$$<br>E[n+1|n] = \frac{E[n+1|n]}{2} + 1<br>$$<br>所以如果都有存档点，那么每个相邻转移期望都是$2$，通过式子$\ref{T1}$所有的期望加起来就是$2n$。</p>
-<p>那如果存档点不在上一关，而是在之前得某一关呢？此时需要回到存档点的关卡，令最近存档点为$\alpha$，我们有如下期望公式<br>$$<br>\begin{align}<br>E[i|i-1] &amp;= \frac{E[i|\alpha]}{2} + 1\\<br>&amp;=\frac{\sum_{j=\alpha+1}^{i} E[j|j-1]}{2} + 1<br>\end{align}<br>$$<br>把熟悉的身影从求和符号中提取出来<br>$$<br>\begin{align}<br>E[i|i-1]&amp;=\frac{E[i|i-1]}{2} + \frac{\sum_{j=\alpha+1}^{i-1} E[j|j-1]}{2} + 1\\<br>\frac{E[i|i-1]}{2} &amp;= \frac{\sum_{j=\alpha+1}^{i-1} E[j|j-1]}{2} + 1 \\<br>E[i|i-1]&amp;=\sum_{j=\alpha+1}^{i-1} E[j|j-1]+2<br>\end{align}<br>$$<br>类比成以下的递推公式<br>$$<br>T(i) = \sum_{j=1}^{i-1} T(j) + 2<br>$$<br>代换，令$S(i) = \sum_{j=1}^{i} T(j)$，则有<br>$$<br>\begin{align}<br>S(i) - S(i - 1) &amp;= S(i - 1) + 2 \\<br>S(i) &amp;= 2S(i - 1) + 2<br>\end{align}<br>$$<br>再次令$G(i) = \frac{S(i)}{2^i}$<br>$$<br>G(i) = G(i-1)+2^{-i+1}<br>$$<br>则有<br>$$<br>G(i) = \sum_{j=1}^{i} 2^{-j+1} = 2 - (\frac{1}{2})^{i-1}<br>$$<br>此时<br>$$<br>S(i) = 2^{i+1} - 2<br>$$<br>则<br>$$<br>T(i) = S(i - 1) + 2 = 2^{i}<br>$$<br>好，花了一大堆功夫推出了个$T(i) = 2^{i}$，那么这个$i$其实就是期望式中的$i-\alpha$。所以<br>$$<br>E[i|i-1]=2^{i-\alpha}<br>$$<br>所以整体来讲，每一段连续的0区间，假设长度为$k=i-\alpha$，则贡献是<br>$$<br>E[i|i-1] + \dots + E[\alpha + 1 | \alpha] = \sum_{i = 1}^{k} = 2^{k+1} - 2<br>$$<br>注意，这里的$i$是有存档点的。我们假设有序列$1000$，那么全部通过的期望步数就是$2^{4+1} - 2$。我们可以构造这样的$10\dots$序列，每构造一次$n$的值就会减少$2^{k+1} - 2$，观察到无论怎么取0和1，我们的期望步数都只会增加个偶数，所以奇数一定构造不出来，至于为什么一定能把一个偶数构造出$2^{k+1} - 2$的分解，emmm</p>
+<p>那如果存档点不在上一关，而是在之前得某一关呢？此时需要回到存档点的关卡，令最近存档点为$\alpha$，我们有如下期望公式<br>$$<br>\begin{align}<br>E[i|i-1] &amp;= \frac{E[i|\alpha]}{2} + 1\\<br>&amp;=\frac{\sum_{j=\alpha+1}^{i} E[j|j-1]}{2} + 1<br>\end{align}<br>$$<br>把熟悉的身影从求和符号中提取出来<br>$$<br>\begin{align}<br>E[i|i-1]&amp;=\frac{E[i|i-1]}{2} + \frac{\sum_{j=\alpha+1}^{i-1} E[j|j-1]}{2} + 1\\<br>\frac{E[i|i-1]}{2} &amp;= \frac{\sum_{j=\alpha+1}^{i-1} E[j|j-1]}{2} + 1 \\<br>E[i|i-1]&amp;=\sum_{j=\alpha+1}^{i-1} E[j|j-1]+2<br>\end{align}<br>$$<br>类比成以下的递推公式<br>$$<br>T(i) = \sum_{j=1}^{i-1} T(j) + 2<br>$$<br>代换，令$S(i) = \sum_{j=1}^{i} T(j)$，则有<br>$$<br>\begin{align}<br>S(i) - S(i - 1) &amp;= S(i - 1) + 2 \\<br>S(i) &amp;= 2S(i - 1) + 2<br>\end{align}<br>$$<br>再次令$G(i) = \frac{S(i)}{2^i}$<br>$$<br>G(i) = G(i-1)+2^{-i+1}<br>$$<br>则有<br>$$<br>G(i) = \sum_{j=1}^{i} 2^{-j+1} = 2 - (\frac{1}{2})^{i-1}<br>$$<br>此时<br>$$<br>S(i) = 2^{i+1} - 2<br>$$<br>则<br>$$<br>T(i) = S(i - 1) + 2 = 2^{i}<br>$$<br>好，花了一大堆功夫推出了个$T(i) = 2^{i}$，那么这个$i$其实就是期望式中的$i-\alpha$。所以<br>$$<br>E[i|i-1]=2^{i-\alpha}<br>$$<br>所以整体来讲，每一段连续的0区间，假设长度为$k=i-\alpha$，则贡献是<br>$$<br>E[i|i-1] + \dots + E[\alpha + 1 | \alpha] = \sum_{i = 1}^{k} 2^k = 2^{k+1} - 2<br>$$<br>注意，这里的$i$是有存档点的。我们假设有序列$1000$，那么全部通过的期望步数就是$2^{4+1} - 2$。我们可以构造这样的$10\dots$序列，每构造一次$n$的值就会减少$2^{k+1} - 2$，观察到无论怎么取0和1，我们的期望步数都只会增加个偶数，所以奇数一定构造不出来，至于为什么一定能把一个偶数构造出$2^{k+1} - 2$的分解，emmm</p>
 <h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>$O(\log^2{n})$</p>
 <h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll n;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%lld"</span>, &amp;n);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">if</span> (n &amp; <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"-1\n"</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">60</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        ll c = (<span class="number">1L</span>L &lt;&lt; (i + <span class="number">1</span>)) - <span class="number">2</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (n &gt;= c) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            n -= c;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            v.push_back(<span class="number">1</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i - <span class="number">1</span>; j++) v.push_back(<span class="number">0</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, v.size());</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> a : v) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d "</span>, a);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 <hr>]]></content>
@@ -157,8 +157,8 @@
         <category>牛客网</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>概率期望</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -218,8 +218,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>概率</tag>
         <tag>数论</tag>
+        <tag>概率</tag>
       </tags>
   </entry>
   <entry>
@@ -490,9 +490,9 @@
         <category>Codeforces</category>
       </categories>
       <tags>
+        <tag>概率期望</tag>
         <tag>动态规划</tag>
         <tag>数论</tag>
-        <tag>概率期望</tag>
       </tags>
   </entry>
   <entry>
@@ -616,8 +616,8 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>状态压缩DP</tag>
         <tag>动态规划</tag>
+        <tag>状态压缩DP</tag>
       </tags>
   </entry>
   <entry>
