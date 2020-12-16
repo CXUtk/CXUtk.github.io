@@ -5,7 +5,19 @@
     <url>/2020/12/10/Graphics/Rasterizer-1/</url>
     <content><![CDATA[<p>最近准备趁这个寒假写一个软件光栅化渲染器，重新学习图形学渲染知识的同时，也要练习自己的软件开发能力。<br>就用这个博客记录一下自己学习的过程和一些重要的知识点吧。</p>
 <a id="more"></a>
-<h1 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h1><h2 id="三角形光栅化"><a href="#三角形光栅化" class="headerlink" title="三角形光栅化"></a>三角形光栅化</h2><h3 id="重心坐标"><a href="#重心坐标" class="headerlink" title="重心坐标"></a>重心坐标</h3><p>重心坐标插值是光栅化中一个至关重要的概念，任何一个三角形内的像素点的可变参数都是由构成这个三角形的三个顶点数据的重心坐标插值得到的。具体来说，有一个点$\textbf{P}$，假设三角形三个顶点分别为$\textbf{A}, \textbf{B}, \textbf{C}$，那么我们可以得到<br>$$<br>\textbf{P} = \alpha\textbf{A} + \beta\textbf{B} + \gamma\textbf{C}<br>$$<br>其中$(\alpha, \beta, \gamma)$构成了点$\textbf{P}$对三角形$\textbf{ABC}$的重心坐标。如果点$\textbf{P}$在三角形内部，则$\alpha, \beta, \gamma$必须满足：</p>
+
+<h1 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h1><h2 id="投影矩阵"><a href="#投影矩阵" class="headerlink" title="投影矩阵"></a>投影矩阵</h2><p>投影矩阵的作用就是把三维空间的物体投影到另一个三维空间中，如果物体能够被显示在屏幕内，那么投影以后的物体会在目标三维空间的一个单位立方体内。此文以OpenGL的投影方式为例，目标物体会被投影到一个由$(-1,-1,-1)$和$(1,1,1)$为顶点的正方形内。</p>
+<h3 id="正交投影矩阵的推导"><a href="#正交投影矩阵的推导" class="headerlink" title="正交投影矩阵的推导"></a>正交投影矩阵的推导</h3><p>正交投影（Orthographic Projection）矩阵物体的z坐标并不会影响最终在屏幕上的成像，除非越过远近平面。整个过程其实就是将某个点$p$，如果$x$坐标在$[l, r]$内，$y$坐标在$[b, t]$内且$z$坐标在$[n, f]$范围内的点投影到$([-1, 1], [-1, 1], [-1, 1])$这个坐标。比如说某个点$x$坐标为$\frac{l+r}{2}$，那么会被映射到$0$这个值。</p>
+<p>我们不妨从每个分量来考虑，假设我们考虑$x$分量，那么也就是存在一个变换$\textbf{T}_x: \mathbb{R} \to \mathbb{R}$，进行变换后$x$分量处于正确的投影位置。那么有<br>$$<br>\begin{cases}<br>\textbf{T}_x(l) = -1 \\<br>\textbf{T}_x(r) = 1<br>\end{cases}<br>$$</p>
+<img src="/images/Ortho.png" class="" width="600" title="正交投影x分量示意图">
+<p>显然（？）$\textbf{T}_x$是个线性变换，也就是说：<br>$$<br>\begin{cases}<br>\textbf{T}_x(l) = al + b = -1 \\<br>\textbf{T}_x(r) = ar + b = 1<br>\end{cases}<br>$$<br>解得<br>$$<br>\begin{cases}<br>a = \dfrac{2}{r - l} \\<br>b = -\dfrac{l + r}{r-l}<br>\end{cases}<br>$$<br>因为有$a, b$两个参数，所以我们不妨将原变换拓展一下，使得输入可以是一个4维向量，也就是我们的位置向量，则$\textbf{T}_x: \mathbb{R}^4 \to \mathbb{R}^4$，假设有一个向量$\vec{x} = (x\ y\ z\ 1)^{T}$，那么$\textbf{T}_x$可以表示为：<br>$$<br>\begin{align}<br>\textbf{T}_x(\vec{x}) &amp;= \begin{bmatrix}<br>\dfrac{2}{r-l}&amp;0&amp;0&amp;-\dfrac{l + r}{r-l}\\<br>0&amp;1&amp;0&amp;0\\<br>0&amp;0&amp;1&amp;0\\<br>0&amp;0&amp;0&amp;1\\<br>\end{bmatrix}\begin{bmatrix}<br>x\\<br>y\\<br>z\\<br>1<br>\end{bmatrix}\\<br>&amp;=\begin{bmatrix}<br>\dfrac{2}{r-l}x - \dfrac{l + r}{r-l}\\<br>y\\<br>z\\<br>1<br>\end{bmatrix}<br>\end{align}<br>$$<br>此时$\textbf{T}_x$的作用就是仅仅进行x分量的映射，同理可得$y,z$分量的映射矩阵：<br>$$<br>\begin{align}<br>\textbf{T}_y &amp;= \begin{bmatrix}<br>1&amp;0&amp;0&amp;0\\<br>0&amp;\dfrac{2}{t-b}&amp;0&amp;-\dfrac{t+b}{t-b}\\<br>0&amp;0&amp;1&amp;0\\<br>0&amp;0&amp;0&amp;1<br>\end{bmatrix}\\<br>\textbf{T}_z &amp;= \begin{bmatrix}<br>1&amp;0&amp;0&amp;0\\<br>0&amp;1&amp;0&amp;0\\<br>0&amp;0&amp;\dfrac{2}{f-n}&amp;-\dfrac{f+n}{f-n}\\<br>0&amp;0&amp;0&amp;1<br>\end{bmatrix}<br>\end{align}<br>$$<br>正交投影矩阵其实就是对每个分量都进行这么一个线性变换，那么我们定义<br>$\textbf{T}_o$为以上三个变换的组合：<br>$$<br>\textbf{T}_o = \textbf{T}_x\textbf{T}_y\textbf{T}_z<br>$$<br>注意到这三个变换都是独立的，所以组合起来就是<br>$$<br>\begin{equation}<br>\textbf{T}_o = \begin{bmatrix}<br>\dfrac{2}{r-l}&amp;0&amp;0&amp;-\dfrac{l + r}{r-l}\\<br>0&amp;\dfrac{2}{t-b}&amp;0&amp;-\dfrac{t+b}{t-b}\\<br>0&amp;0&amp;\dfrac{2}{f-n}&amp;-\dfrac{f+n}{f-n}\\<br>0&amp;0&amp;0&amp;1<br>\end{bmatrix}<br>\end{equation}<br>$$<br>然后这就是完整的正交投影矩阵了。</p>
+<h3 id="透视投影矩阵的推导"><a href="#透视投影矩阵的推导" class="headerlink" title="透视投影矩阵的推导"></a>透视投影矩阵的推导</h3><p>透视投影（Perspective Projection）矩阵和正交投影的区别在于此时物体的$z$坐标会影响其在投影空间下$x,y$坐标的值，就像人眼所看到的那样，如果离视点得近，那么物体会变大，而离得远会变小。</p>
+<img src="/images/Persp.png" class="" title="100% 透视投影示意图">
+<p>如图所示，这时候的映射就不像之前那么简单了，假设我们还是有一个$\vec{x}$，原先正交投影变换$\textbf{T}_o(x)$会映射$x$到一个值$\alpha$，但是在透视中，映射的值会跟$z$有关系，变成$\alpha f(z)$。</p>
+<img src="/images/PerspLR.png" class="" title="100% 透视投影示意图">
+<img src="/images/PerspSim.png" class="" title="100% 透视投影示意图">
+<p>跟之前那幅图对比，此时不再是对$l,r$这个范围进行映射，而是对$l’, r’$进行映射。根据蓝绿两个相似三角形的原理，我们可以推出$x$和$x’$的关系：<br>$$<br>\frac{x}{x’} = \frac{z}{n} \implies x’ = n\frac{x}{z}<br>$$<br>也就是说，我们要使用这个关系还原出$x’$，再让它在$l,r$范围内进行之前的映射。但是这个关系并不是很线性，因为我们要除以$z$这样一个输入里面已经有的值。要把这个关系变成线性映射，我们可以在输入的时候就把所有坐标都除以$z$再乘以$n$，即<br>$$<br>\begin{bmatrix}<br>\frac{nx}{z}\\<br>\frac{ny}{z}\\<br>\frac{nz}{z}\\<br>1<br>\end{bmatrix}<br>$$<br>如果我们能这么做，那么接下来的变换就会变成这样（以$x$坐标为例）：<br>$$<br>\begin{align}<br>\textbf{T}_x(\vec{x}) &amp;= \begin{bmatrix}<br>\dfrac{2}{r-l}&amp;0&amp;0&amp;-\dfrac{l + r}{r-l}\\<br>0&amp;1&amp;0&amp;0\\<br>0&amp;0&amp;1&amp;0\\<br>0&amp;0&amp;0&amp;1\\<br>\end{bmatrix}\begin{bmatrix}<br>\frac{nx}{z}\\<br>\frac{ny}{z}\\<br>\frac{nz}{z}\\<br>1<br>\end{bmatrix}\\<br>&amp;=\begin{bmatrix}<br>\dfrac{2}{r-l}x’ - \dfrac{l+r}{r-l}\\<br>\frac{ny}{z}\\<br>\frac{nz}{z}\\<br>1<br>\end{bmatrix}<br>\end{align}<br>$$<br>我们可以利用$w$坐标做到这件事，因为向量最终结果要除以$w$，所以如果我们设$w$为$\dfrac{z}{n}$，就可以达到效果<br>$$<br>\begin{bmatrix}<br>x\\<br>y\\<br>z\\<br>\frac{z}{n}<br>\end{bmatrix} = \begin{bmatrix}<br>\frac{nx}{z}\\<br>\frac{ny}{z}\\<br>n\\<br>1<br>\end{bmatrix}<br>$$<br>把$w$变成$\dfrac{z}{n}$是一个线性变换，因为$n$是个常数，所以<br>$$<br>\begin{bmatrix}<br>1&amp;0&amp;0&amp;0\\<br>0&amp;1&amp;0&amp;0\\<br>0&amp;0&amp;1&amp;0\\<br>0&amp;0&amp;\frac{1}{n}&amp;0<br>\end{bmatrix}\begin{bmatrix}<br>x\\<br>y\\<br>z\\<br>1<br>\end{bmatrix}<br>=\begin{bmatrix}<br>x\\<br>y\\<br>z\\<br>\frac{z}{n}<br>\end{bmatrix}<br>$$<br>那么我们下一步就可以直接使用正交投影了，但是要注意此时变换后的向量原来的$z$已经不是$z$了，变成了$n$，所以我们无法推出此时矩阵第三行的变换内容，但是整个透视投影的过程可以被描述为：<br>$$<br>\textbf{P}_p(\vec{x}) =<br>\begin{bmatrix}<br>\dfrac{2}{r-l}&amp;0&amp;0&amp;-\dfrac{l + r}{r-l}\\<br>0&amp;\dfrac{2}{t-b}&amp;0&amp;-\dfrac{t+b}{t-b}\\<br>?&amp;?&amp;?&amp;?\\<br>0&amp;0&amp;0&amp;1<br>\end{bmatrix}<br>\begin{bmatrix}<br>1&amp;0&amp;0&amp;0\\<br>0&amp;1&amp;0&amp;0\\<br>0&amp;0&amp;1&amp;0\\<br>0&amp;0&amp;\frac{1}{n}&amp;0<br>\end{bmatrix}<br>\begin{bmatrix}<br>x\\<br>y\\<br>z\\<br>1<br>\end{bmatrix}<br>$$<br>左边两个矩阵乘起来就是：<br>$$<br>\begin{bmatrix}<br>\dfrac{2}{r-l}&amp;0&amp;-\dfrac{l + r}{n(r-l)}&amp;0\\<br>0&amp;\dfrac{2}{t-b}&amp;-\dfrac{t+b}{n(t-b)}&amp;0\\<br>?&amp;?&amp;?&amp;?\\<br>0&amp;0&amp;\dfrac{1}{n}&amp;0<br>\end{bmatrix}<br>$$<br>我们把问号设为未知数$A,B,C,D$，为了求出他们，我们可以列方程，四个未知数使用空间中任意4个已知点即可求出来。比如点$(l,b,n)$应该被映射为$(-1,-1,-1, 1)$, $(r,t,f)$应该被映射为$(1,1,1,1)$，诸如此类，具体解法这里不再叙述，最终解得：<br>$$<br>\textbf{T}_p = \begin{bmatrix}<br>\dfrac{2n}{r-l}&amp;0&amp;-\dfrac{l + r}{r-l}&amp;0\\<br>0&amp;\dfrac{2n}{t-b}&amp;-\dfrac{t+b}{t-b}&amp;0\\<br>0&amp;0&amp;\dfrac{f+n}{f-n}&amp;-\dfrac{2fn}{f-n}\\<br>0&amp;0&amp;1&amp;0<br>\end{bmatrix}<br>$$<br>注意，这个矩阵是除以$w$以后的。</p>
+<h2 id="三角形光栅化"><a href="#三角形光栅化" class="headerlink" title="三角形光栅化"></a>三角形光栅化</h2><h3 id="重心坐标"><a href="#重心坐标" class="headerlink" title="重心坐标"></a>重心坐标</h3><p>重心坐标插值是光栅化中一个至关重要的概念，任何一个三角形内的像素点的可变参数都是由构成这个三角形的三个顶点数据的重心坐标插值得到的。具体来说，有一个点$\textbf{P}$，假设三角形三个顶点分别为$\textbf{A}, \textbf{B}, \textbf{C}$，那么我们可以得到<br>$$<br>\textbf{P} = \alpha\textbf{A} + \beta\textbf{B} + \gamma\textbf{C}<br>$$<br>其中$(\alpha, \beta, \gamma)$构成了点$\textbf{P}$对三角形$\textbf{ABC}$的重心坐标。如果点$\textbf{P}$在三角形内部，则$\alpha, \beta, \gamma$必须满足：</p>
 <ul>
 <li>$0 \leq \alpha, \beta, \gamma \leq 1$</li>
 <li>$\alpha + \beta + \gamma = 1$</li>
@@ -237,9 +249,9 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>概率</tag>
         <tag>动态规划</tag>
         <tag>数论</tag>
+        <tag>概率</tag>
       </tags>
   </entry>
   <entry>
@@ -430,8 +442,8 @@
         <category>数论</category>
       </categories>
       <tags>
-        <tag>数论</tag>
         <tag>随机化</tag>
+        <tag>数论</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -511,8 +523,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>数论</tag>
         <tag>概率期望</tag>
+        <tag>数论</tag>
       </tags>
   </entry>
   <entry>
