@@ -45,18 +45,18 @@
   };
 </script>
 
-  <meta name="description" content="题意给你一个长度为$n(n\leq 10^5)$的序列$A$, 满足$1 \leq A_i \leq i$。求确定每个数的正负号，使得总和为$0$。">
-<meta name="keywords" content="贪心,结论,数学">
+  <meta name="description" content="题意给你一张名次表，以及每个队伍的名次变化，求上一轮队伍名次有多少种可能性。">
+<meta name="keywords" content="数学,计数,思维">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[UVA1614] Hell on the Markets">
-<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;02&#x2F;26&#x2F;UVA1614&#x2F;index.html">
+<meta property="og:title" content="[UVA11982] Fantasy Cricket">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;12&#x2F;18&#x2F;UVA11982&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
-<meta property="og:description" content="题意给你一个长度为$n(n\leq 10^5)$的序列$A$, 满足$1 \leq A_i \leq i$。求确定每个数的正负号，使得总和为$0$。">
+<meta property="og:description" content="题意给你一张名次表，以及每个队伍的名次变化，求上一轮队伍名次有多少种可能性。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-26T21:07:24.950Z">
+<meta property="og:updated_time" content="2020-12-18T21:36:00.993Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://mrskirt.cc/2020/02/26/UVA1614/">
+<link rel="canonical" href="http://mrskirt.cc/2020/12/18/UVA11982/">
 
 
 <script id="page-configurations">
@@ -70,7 +70,7 @@
   };
 </script>
 
-  <title>[UVA1614] Hell on the Markets | Skirt's Blog</title>
+  <title>[UVA11982] Fantasy Cricket | Skirt's Blog</title>
   
 
 
@@ -205,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/02/26/UVA1614/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/12/18/UVA11982/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -218,7 +218,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [UVA1614] Hell on the Markets
+          [UVA11982] Fantasy Cricket
         </h1>
 
         <div class="post-meta">
@@ -229,7 +229,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-26 14:56:32 / 修改时间：16:07:24" itemprop="dateCreated datePublished" datetime="2020-02-26T14:56:32-05:00">2020-02-26</time>
+              <time title="创建时间：2020-12-18 15:38:54 / 修改时间：16:36:00" itemprop="dateCreated datePublished" datetime="2020-12-18T15:38:54-05:00">2020-12-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,19 +267,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你一个长度为$n(n\leq 10^5)$的序列$A$, 满足$1 \leq A_i \leq i$。求确定每个数的正负号，使得总和为$0$。</p>
+        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你一张名次表，以及每个队伍的名次变化，求上一轮队伍名次有多少种可能性。</p>
 <a id="more"></a>
 
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>如果不考虑那个诡异的条件，显然我们只需要求出序列$A$的子集和是否可以等于总和的一半即可。但是子集和问题(Subset Sum)是一个著名的NPC问题，显然无法在满足时间限制的条件下得到解。</p>
-<p>于是我们必须考虑如何使用$1 \leq A_i \leq i$这个条件。我一开始的猜想就是如果序列总和$S_n$是偶数，那么在这个限制条件下一定存在一个子集$a$使得$Sum(a) = S / 2$。但是我无法证明它，也没法找到一个合适的贪心方法找出这个子集。</p>
-<p>看了别人的题解才发现这个结论需要变得更强一点：对于前缀和$S_i$，以及$1$到$S_i$的每个整数$x$，一定能从前$i$个元素中找出一个子集使得子集的和等于$x$。证明可以使用归纳法：</p>
-<p>$\textbf{Base Case: }$ 当$i = 1$的时候，我们有$a_1 = 1$，那么我们可以用$a_1$，凑出$S_1$。</p>
-<p>$\textbf{Inductive Hypothesis: }$ 假设对于整数$k$，我们有对于所有$1$到$S_k$的整数，都存在一个由前$k$个数组成的集合，使得集合的和为这个整数。</p>
-<p>那么对于整数$k+1$，新加入的这个$a_{k+1}$有$1 \leq a_{k+1} \leq k + 1$。此时$S_{k+1} = S_k + a_{k + 1}$。对于所有$x \leq S_k$，我们都可以用前$k$个元素组成。那么我们只需要考虑对于所有$S_k + 1 \leq x \leq S_k + k + 1$我们如何去组合就行了。假设我们有$a_{k+1} = y$，$S_{k + 1} = S_k + y$，那么$S_k + j (j \in [1, y])$可以由组成$S_k + j - y$的集合中，添加一个$a_{k+1}$组成。由于$y\geq j$，所以所有的$S_k + j - y$集合都可以由前$k$个元素组成，新加的元素只需要贡献$y$。因此我们有对于所有$1$到$S_{k+1}$的整数，都存在一个由前$k+1$个数组成的集合，使得集合的和为这个整数。</p>
-<p>于是此结论得证，我们一定可以凑出来$S_n/2$。但是怎样去凑呢？还是要利用这个结论。假设我们想用前$k$个元素凑出$x$，则一定有$x&lt;=S_k$，那么如果$0 \leq x-a_k \leq S_{k-1}$，则前$k-1$个元素一定能凑出$x-a_k$。由于$x\leq S_k$，所以一定满足$x-a_k \leq S_{k-1}$。如果出现$x-a_k$为负数的情况，那么一定有$x \leq S_{k-1}$，否则根据前缀和，无法出现负数。由于$x \leq S_k$一直保持，所以一定有$x\leq S_1=1$，所以$x$最后一定为$0$。</p>
-<p>至此，我们得出了一个凑出子集和等于$S_n/2$的方法，从后往前选取$a_i$，如果$a_i$的选取会超出$S_n/2$，那么就不选，由于上面的证明，最后一定选取的元素和一定为$S_n/2$。至此，这道题终于被解决了，有两个结论和两个不显然的证明，实在是难想啊。</p>
-<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(n)$</p>
-<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[MAXN];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">ll pref[MAXN];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;arr[i]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        pref[i] = pref[i - <span class="number">1</span>] + arr[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (pref[n] &amp; <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    ll st = pref[n] / <span class="number">2</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n; i &gt;= <span class="number">1</span>; i--) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (st - arr[i] &gt;= <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">            st -= arr[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">            arr[i] *= <span class="number">-1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i != <span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">" "</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, arr[i] &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">1</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (~<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">        solve();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>这题想要想清楚细节并不容易，首先，如果当前排名$i$的队伍名次上涨，就意味着上一轮这个队伍的排名一定在$[i-1. n]$这个范围内，如果下降就是$[1, i - 1]$这个范围内。如果名次不变那么只有一种选择就是上一轮也排在第$i$名。</p>
+<p>假设<strong>这一轮</strong>队伍的排名情况是数组$A$，<strong>上一轮</strong>队伍的排名情况是数组$B$，那么可以通过刚才推出的关系在$A,B$之间连边，具体来说假设$A_i$是上涨的，那么连接$A_i$和$B_j(j \in [i-1, n])$这几条边。最后这两个集合所组成的图一定构成一个二分图，则答案是二分图完美匹配的个数。</p>
+<p>二分图完美匹配计数本身是个NP-hard问题，但是对于这道题来说，我们可以利用一些特殊性质来有效的求解。</p>
+<p>我们不妨从第i名开始，分析$A,B$之间的匹配都有哪些可能。</p>
+<p>如果$A_i$是上涨的，那么与$A_i$匹配的某个$B_j$一定是在$i$后面，而此时的$B_i$可以选择：</p>
+<ol>
+<li>匹配之前的某个$A_i$，并且这个$A_i$一定是上涨状态</li>
+<li>或者不匹配任何一个之前的$A_i$，把自己留给后面的某个$A_j$去匹配</li>
+</ol>
+<p>如果$A_i$是下降的，那么$A_i$<strong>必须</strong>匹配某个在$i$之前的$B_j$，此时$B_i$的选择和上涨情况是一样的。<br>如果$A_i$不变，那么$A_i$只能匹配$B_i$，$B_i$也是一样。</p>
+<p>我们可以发现，对于$A$集合中的元素，不考虑相等我们的决策只有：要么必须与之前某个$B_j$匹配，要么必须留到后面。<br>对于$B$中的元素，可以选择往前面某个上涨$A_i$匹配，或者留到后面。</p>
+<p>我们不妨设状态为$f(i, j, k)$，代表考虑到两个集合的前$i$个元素的时候，$B$中在$i$以及$i$以前有$j$个未匹配的元素，且$A$中$i$以及$i$以前有$k$个未匹配的上涨元素。</p>
+<p>那么我们分别让$A_i,B_i$做出决策：</p>
+<ol>
+<li>当$A_i$是上涨状态时，$A_i$留到后面匹配，因为$k$包含自己，所以不变，$B_i$在此时可以选择匹配之前某个$A_j$，这个时候$B_i$因为匹配了值，所以$j$减少1，$k$也减少1，$B_i$可以匹配之前的$k-1$个上涨元素（不包含$A_i$）中的任意一个，有$k-1$种情况。如果$B_i$也不匹配，那么$j,k$的值都不变，这种情况只有一种。</li>
+<li>当$A_i$是下降状态时，$A_i$<strong>必须</strong>匹配之前的任意一个$B_j$，$B_j$被匹配了，所以$j$减少1，总共有$j-1$种可能性。而$B_i$情况和之前相同，如果选择匹配之前某个$A_j$，那么仍然有$k-1$种情况，匹配后$j,k$再减少1，而如果不匹配$j,k$不变，有一种情况。</li>
+<li>当$A_i$不变时，$A_i$与$B_i$匹配，$j,k$都减少1，只有一种情况。</li>
+</ol>
+<p>但是这样考虑我们需要记录$i,j,k$三个状态，在题目数据范围下显然不可行，但是刚才的思考$i,j,k$都是已经算好的，如果我们考虑从之前的$i-1,j,k$中转移呢？假设这时候的$j, k$都是从$i-1$中得出的，那么在每种操作结束后的$j,k$状态会变化：</p>
+<ol>
+<li>当$A_i$是上涨状态时，因为多了个上涨的$A_i$，所以状态变成$i, j+1, k+1$，后续操作会生成$i, j, k$或者$i, j+1, k+1$。</li>
+<li>当$A_i$是下降状态时，只多了个$B_i$，所以状态变成$i, j+1, k$，后续操作会生成$i, j, k$或者$i, j-1, k-1$。</li>
+<li>当$A_i$不变时，$A_i$与$B_i$匹配，所以状态是$i, j, k$。</li>
+</ol>
+<p>我们可以发现$j,k$的值<strong>在任何时候都相等</strong>，于是我们可以把它合并，最终状态为$f(i, j)$代表考虑两个集合前$i$个元素的匹配，此时$i$和$i$之前的$A,B$有$j$个上涨的$A$和没匹配的$B$。</p>
+<p>转移只要常数时间就可以做到，至此这题就算解决了。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(n^2)$</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">increase</span><span class="params">(<span class="keyword">int</span>&amp; d, <span class="keyword">int</span> v)</span> </span>&#123; d = (d + v) % MOD; &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">"%s"</span>, S + <span class="number">1</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">n = <span class="built_in">strlen</span>(S + <span class="number">1</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= i; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        dp[i][j] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (S[i] == <span class="string">'E'</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">            increase(dp[i][j], dp[i - <span class="number">1</span>][j]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (S[i] == <span class="string">'U'</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">            increase(dp[i][j], (ll)dp[i - <span class="number">1</span>][j] * j % MOD);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (j) increase(dp[i][j], dp[i - <span class="number">1</span>][j - <span class="number">1</span>]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">            increase(dp[i][j], (ll)dp[i - <span class="number">1</span>][j + <span class="number">1</span>] * (j - <span class="number">1</span>) * (j - <span class="number">1</span>) % MOD);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">            increase(dp[i][j], (ll)dp[i - <span class="number">1</span>][j] * j % MOD);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
     </div>
 
     
@@ -288,9 +306,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag"># 贪心</a>
-              <a href="/tags/%E7%BB%93%E8%AE%BA/" rel="tag"># 结论</a>
               <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+              <a href="/tags/%E8%AE%A1%E6%95%B0/" rel="tag"># 计数</a>
+              <a href="/tags/%E6%80%9D%E7%BB%B4/" rel="tag"># 思维</a>
           </div>
 
         
@@ -299,13 +317,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/10/SDOI2012Mission/" rel="prev" title="[SDOI2012]任务安排">
-      <i class="fa fa-chevron-left"></i> [SDOI2012]任务安排
+    <a href="/2020/12/10/Graphics/Rasterizer-1/" rel="prev" title="软光栅化渲染器【1】">
+      <i class="fa fa-chevron-left"></i> 软光栅化渲染器【1】
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/02/26/CF1286A/" rel="next" title="[CF1286A] Garland">
-      [CF1286A] Garland <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
