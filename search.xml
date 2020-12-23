@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>[CF201C] Fragile Bridges</title>
+    <url>/2020/12/22/CF201C/</url>
+    <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。</p>
+<a id="more"></a>
+
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>对于任意个一个顶点$i$来说，要么我们往左右中的一个方向走，再也不回到顶点$i$，要么我们往一个方向走回到$i$，然后再往另一个方向走，可以选择回到或者不回到$i$。</p>
+<p>于是对于顶点$i$来说，从它开始能走的最远步数就是</p>
+<ol>
+<li>往左边走再回来的最大步数+往右边走不一定回来的最大步数</li>
+<li>往右边走再回来的最大步数+往左边走不一定回来的最大步数<br>其中取最大值就是答案。</li>
+</ol>
+<p>那么如何求这个最大步数呢，我们以往左边走再回来的最大次数为例，记为$LB_i$，假设我们在顶点$1$，左边是边$e_1$和顶点$0$。那么此时我们可以往左来回走最大的偶数步，所以$LB_1 = \text{maxEven}(a_1)$。继续推导，假设我们在顶点$i$，那么我们要往左走偶数步，并且加上从$i-1$这个点还能回来的最大步数。只要我们能在前一条边上走偶数步（不为0），那么我们一定用这么多步走到$i-1$再走回来。所以有$LB_i = LB_{i-1} + \text{maxOdd}(a_i)$，注意如果边上的脆弱度为$1$则我们到达不了前一个顶点。</p>
+<p>如果是往左边走但是不一定回来的步数，记为$LN_i$，那么$LN_i$至少得是$LB_i$，然后我们用刚才的方法可以得知，如果想要不回来，那么往左走的步数一定是奇数步，所以$LN_i = \max(LB_i, LN_{i-1} + \text{maxOdd}(a_i))$。</p>
+<p>往右走的最大步数也是依次类推，注意可以利用二进制来获取$\text{maxEven}(x)$和$\text{maxOdd}(x)$，具体见代码。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(n)$</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n - <span class="number">1</span>; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        f[i] = read&lt;<span class="keyword">int</span>&gt;();</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    LB[<span class="number">1</span>] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    LN[<span class="number">1</span>] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        LB[i] = (f[i - <span class="number">1</span>] == <span class="number">1</span>) ? <span class="number">0</span> : (LB[i - <span class="number">1</span>] + (f[i - <span class="number">1</span>] &amp; (~<span class="number">1</span>)));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        LN[i] = <span class="built_in">std</span>::max(((f[i - <span class="number">1</span>] - <span class="number">1</span>) | <span class="number">1</span>) + LN[i - <span class="number">1</span>], LB[i]);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"> </span></pre></td></tr><tr><td class="code"><pre><span class="line">    RB[n] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    RN[n] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        RB[i] = (f[i] == <span class="number">1</span>) ? <span class="number">0</span> : (RB[i + <span class="number">1</span>] + (f[i] &amp; (~<span class="number">1</span>)));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        RN[i] = <span class="built_in">std</span>::max(((f[i] - <span class="number">1</span>) | <span class="number">1</span>) + RN[i + <span class="number">1</span>], RB[i]);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        ans = <span class="built_in">std</span>::max(&#123;ans, LB[i] + RN[i], RB[i] + LN[i]&#125;);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, ans);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>题解</category>
+        <category>Codeforces</category>
+      </categories>
+      <tags>
+        <tag>动态规划</tag>
+        <tag>思维</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[UVA11982] Fantasy Cricket</title>
     <url>/2020/12/18/UVA11982/</url>
     <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你一张名次表，以及每个队伍的名次变化，求上一轮队伍名次有多少种可能性。</p>
@@ -39,9 +65,9 @@
         <category>UVA</category>
       </categories>
       <tags>
+        <tag>思维</tag>
         <tag>数学</tag>
         <tag>计数</tag>
-        <tag>思维</tag>
       </tags>
   </entry>
   <entry>
@@ -205,8 +231,8 @@
         <category>NOIP</category>
       </categories>
       <tags>
-        <tag>拓扑排序</tag>
         <tag>动态规划</tag>
+        <tag>拓扑排序</tag>
       </tags>
   </entry>
   <entry>
@@ -487,8 +513,8 @@
       </categories>
       <tags>
         <tag>数论</tag>
-        <tag>搜索</tag>
         <tag>随机化</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>

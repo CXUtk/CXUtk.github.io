@@ -45,18 +45,18 @@
   };
 </script>
 
-  <meta name="description" content="题意一开始有一个空集合$S$，你每次可以往里放入一个从$1$到$m$的数，如果里面的数的$\gcd$为1则停下。求期望多少次后会停下。">
-<meta name="keywords" content="概率,动态规划,数论">
+  <meta name="description" content="题意给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。">
+<meta name="keywords" content="动态规划,思维">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[CF1139D] Steps to One">
-<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;07&#x2F;26&#x2F;CF1139D&#x2F;index.html">
+<meta property="og:title" content="[CF201C] Fragile Bridges">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;12&#x2F;22&#x2F;CF201C&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
-<meta property="og:description" content="题意一开始有一个空集合$S$，你每次可以往里放入一个从$1$到$m$的数，如果里面的数的$\gcd$为1则停下。求期望多少次后会停下。">
+<meta property="og:description" content="题意给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-11-30T00:53:11.405Z">
+<meta property="og:updated_time" content="2020-12-23T00:00:11.910Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://mrskirt.cc/2020/07/26/CF1139D/">
+<link rel="canonical" href="http://mrskirt.cc/2020/12/22/CF201C/">
 
 
 <script id="page-configurations">
@@ -70,7 +70,7 @@
   };
 </script>
 
-  <title>[CF1139D] Steps to One | Skirt's Blog</title>
+  <title>[CF201C] Fragile Bridges | Skirt's Blog</title>
   
 
 
@@ -205,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/07/26/CF1139D/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/12/22/CF201C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -218,7 +218,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [CF1139D] Steps to One
+          [CF201C] Fragile Bridges
         </h1>
 
         <div class="post-meta">
@@ -227,16 +227,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-07-26 21:48:07" itemprop="dateCreated datePublished" datetime="2020-07-26T21:48:07-04:00">2020-07-26</time>
+              <time title="创建时间：2020-12-22 15:15:59 / 修改时间：19:00:11" itemprop="dateCreated datePublished" datetime="2020-12-22T15:15:59-05:00">2020-12-22</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-29 19:53:11" itemprop="dateModified" datetime="2020-11-29T19:53:11-05:00">2020-11-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -273,12 +267,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>一开始有一个空集合$S$，你每次可以往里放入一个从$1$到$m$的数，如果里面的数的$\gcd$为1则停下。求期望多少次后会停下。</p>
+        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。</p>
 <a id="more"></a>
 
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>首先我们知道期望公式为$\sum_{x} xp(x)$，但是很可惜，由于步数可以到无穷，所以貌似不太好从这里入手。<br>于是我们考虑使用期望递推式，令$f(i)$为当前集合内元素$gcd$为$i$，期望需要多少步后停下。很显然$f(1)=0$，那么对于$m=2, f(2)$来说，总共$m$种选择，要么下一步加入的这个数是个偶数，那么又回到$f(2)$，要么是个奇数我们直接跳到$f(1)$的结果，所以$f(2) = 1 + \frac{f(2)}{2} + \frac{f(1)}{2}$。也就是说，对于$f(i)$，有：<br>$$<br>f(i) = 1 + \sum_{j=1}^{m} \frac{f(\gcd(i, j))}{m}<br>$$<br>由于$\gcd(i, j)$有可能等于$i$，所以我们要进行一些消元操作，把这些数移到右边。这样的数总共有$\lfloor\frac{m}{i}\rfloor$个，所以可以改写为：<br>$$<br>f(i) = 1 + \sum_{j=1, \gcd(i, j) \neq i}^{m} \frac{f(\gcd(i, j))}{m} + \frac{\lfloor\frac{m}{i}\rfloor f(i)}{m}\\<br>\frac{m - \lfloor\frac{m}{i}\rfloor}{m}f(i) = 1 + \sum_{j=1, \gcd(i, j) \neq i}^{m} \frac{f(\gcd(i, j))}{m} \\<br>$$<br>于是得到最终式子<br>$$<br>\begin{equation}<br>f(i) = \frac{m + \sum_{j=1, \gcd(i, j) \neq i}^{m} f(\gcd(i, j))}{m - \lfloor\frac{m}{i}\rfloor}<br>\end{equation}<br>$$<br>那么最终的答案就可以写成$Ans = 1+\frac{\sum_i^{m} f(i)}{m}$<br>然而这个式子不化简递推至少需要$O(m^2\log{m})$的时间复杂度，所以考虑枚举$\gcd(i, j)$，这个值一定是$i$的约数。<br>$$<br>\sum_{j=1}^{m} f(\gcd(i, j)) = \sum_{d|i} f(d) \sum_{j=1}^{m} [\gcd(i, j) == d]<br>$$<br>然后便是$\gcd$莫比乌斯反演的标准套路了<br>$$<br>\begin{align}<br>S &amp;= \sum_{d|i} f(d) \sum_{j=1}^{\lfloor \frac{m}{d} \rfloor} \bigg[\gcd\bigg(\frac{i}{d}, j\bigg) == 1\bigg] \\<br>&amp;= \sum_{d|i} f(d) \sum_{j=1}^{\lfloor \frac{m}{d} \rfloor} \sum_{g|\gcd(i/d, j) } \mu(g) \\<br>&amp;= \sum_{d|i} f(d) \sum_{g|i/d} \mu(g) \lfloor\frac{m}{dg} \rfloor<br>\end{align}<br>$$<br>然后又是老套路令$T=gd$，并且我们直接枚举$T$，此时$g = \frac{T}{d}$<br>$$<br>\begin{equation}<br>S = \sum_{T|i} \lfloor\frac{m}{T} \rfloor \sum_{d|T} \mu\bigg(\frac{T}{d}\bigg) f(d)<br>\end{equation}<br>$$<br>然后我们刨去$f(d=i)$的部分，但是观察到当$f(d=i)$的时候对整个式子的贡献就是它自己，因为$\mu(1)$和前面那坨都是1，而我们在推式子 $(1)$ 的时候已经把$f(d=i)$的贡献丢掉了，所以此时我们用直接 $(5)$ 替换掉 $(1)$ 中求贡献的部分即可。<br>$$<br>\begin{equation}<br>f(i) = \frac{m + \sum_{T|i} \lfloor\frac{m}{T} \rfloor \sum_{d|T} \mu(\frac{T}{d}) f(d)}{m - \lfloor\frac{m}{i}\rfloor}<br>\end{equation}<br>$$<br>此时还有一个小问题，就是如何快速求$g(T) = \sum_{d|T} \mu(\frac{T}{d}) f(d)$，其实很简单，每次我们求出一个$f(i)$，我们可以用类似埃氏筛的方法枚举倍数，然后把$\mu(\frac{T}{i}) f(i)$加到对应的$g(T)$上即可。</p>
-<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>每个数的约数，以及$\mu(i)$可以用欧拉筛和埃氏筛在$O(m)$时间内求出。<br>对于每个$f(i)$，先求约数，然后与$g(T)$进行计算，这个时间复杂度会被均摊到$O(m\log{m})$。<br>接下里每个$f(i)$还会枚举倍数，这个复杂度可以用调和级数计算$\sum_i \lfloor\frac{m}{i}\rfloor \leq O(m\ln{m})$。<br>所以总体复杂度为$O(m\log{m})$</p>
-<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sieve</span><span class="params">(<span class="keyword">int</span> N)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    mu[<span class="number">1</span>] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= N; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!nop[i]) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">            primes[tot++] = i;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">            mu[i] = <span class="number">-1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; tot &amp;&amp; primes[j] * i &lt;= N; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            nop[i * primes[j]] = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (i % primes[j] == <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">                mu[i * primes[j]] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">            mu[i * primes[j]] = -mu[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 求每个数的约数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= N; i++)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt;= N; j += i) d[j].push_back(i);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;m);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    sieve(m);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> invM = getInv(m, MOD);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= m; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> d : d[i]) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">            F[i] += (ll)(m / d) * G[d] % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">            F[i] %= MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">        F[i] = (F[i] + m) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">        F[i] = (ll)F[i] * getInv((m - m / i), MOD) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 递推G(T)的值</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt;= m; j += i) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">            G[j] += mu[j / i] * F[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">            G[j] %= MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">        sum = (sum + F[i]) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 把数值扳正</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, (((ll)sum * invM + <span class="number">1</span>) % MOD + MOD) % MOD);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>对于任意个一个顶点$i$来说，要么我们往左右中的一个方向走，再也不回到顶点$i$，要么我们往一个方向走回到$i$，然后再往另一个方向走，可以选择回到或者不回到$i$。</p>
+<p>于是对于顶点$i$来说，从它开始能走的最远步数就是</p>
+<ol>
+<li>往左边走再回来的最大步数+往右边走不一定回来的最大步数</li>
+<li>往右边走再回来的最大步数+往左边走不一定回来的最大步数<br>其中取最大值就是答案。</li>
+</ol>
+<p>那么如何求这个最大步数呢，我们以往左边走再回来的最大次数为例，记为$LB_i$，假设我们在顶点$1$，左边是边$e_1$和顶点$0$。那么此时我们可以往左来回走最大的偶数步，所以$LB_1 = \text{maxEven}(a_1)$。继续推导，假设我们在顶点$i$，那么我们要往左走偶数步，并且加上从$i-1$这个点还能回来的最大步数。只要我们能在前一条边上走偶数步（不为0），那么我们一定用这么多步走到$i-1$再走回来。所以有$LB_i = LB_{i-1} + \text{maxOdd}(a_i)$，注意如果边上的脆弱度为$1$则我们到达不了前一个顶点。</p>
+<p>如果是往左边走但是不一定回来的步数，记为$LN_i$，那么$LN_i$至少得是$LB_i$，然后我们用刚才的方法可以得知，如果想要不回来，那么往左走的步数一定是奇数步，所以$LN_i = \max(LB_i, LN_{i-1} + \text{maxOdd}(a_i))$。</p>
+<p>往右走的最大步数也是依次类推，注意可以利用二进制来获取$\text{maxEven}(x)$和$\text{maxOdd}(x)$，具体见代码。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(n)$</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n - <span class="number">1</span>; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        f[i] = read&lt;<span class="keyword">int</span>&gt;();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    LB[<span class="number">1</span>] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    LN[<span class="number">1</span>] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">        LB[i] = (f[i - <span class="number">1</span>] == <span class="number">1</span>) ? <span class="number">0</span> : (LB[i - <span class="number">1</span>] + (f[i - <span class="number">1</span>] &amp; (~<span class="number">1</span>)));</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">        LN[i] = <span class="built_in">std</span>::max(((f[i - <span class="number">1</span>] - <span class="number">1</span>) | <span class="number">1</span>) + LN[i - <span class="number">1</span>], LB[i]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    RB[n] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    RN[n] = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">1</span>; i--) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">        RB[i] = (f[i] == <span class="number">1</span>) ? <span class="number">0</span> : (RB[i + <span class="number">1</span>] + (f[i] &amp; (~<span class="number">1</span>)));</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">        RN[i] = <span class="built_in">std</span>::max(((f[i] - <span class="number">1</span>) | <span class="number">1</span>) + RN[i + <span class="number">1</span>], RB[i]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    ll ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">        ans = <span class="built_in">std</span>::max(&#123;ans, LB[i] + RN[i], RB[i] + LN[i]&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, ans);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
     </div>
 
     
@@ -287,9 +289,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%A6%82%E7%8E%87/" rel="tag"># 概率</a>
               <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
-              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+              <a href="/tags/%E6%80%9D%E7%BB%B4/" rel="tag"># 思维</a>
           </div>
 
         
@@ -298,13 +299,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/23/CF442B/" rel="prev" title="[CF442B] Andrey and Problem">
-      <i class="fa fa-chevron-left"></i> [CF442B] Andrey and Problem
+    <a href="/2020/12/18/UVA11982/" rel="prev" title="[UVA11982] Fantasy Cricket">
+      <i class="fa fa-chevron-left"></i> [UVA11982] Fantasy Cricket
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/07/31/NC21337/" rel="next" title="[NC 21337] 牛牛的回文串">
-      [NC 21337] 牛牛的回文串 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
