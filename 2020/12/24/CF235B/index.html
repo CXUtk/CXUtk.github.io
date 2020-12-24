@@ -45,18 +45,18 @@
   };
 </script>
 
-  <meta name="description" content="题意给你两个数$N,M (\leq 10^7, N-M\leq 10^5)$，求从2到$N!$有多少个数所有素因子都大于$M$。">
-<meta name="keywords" content="数论">
+  <meta name="description" content="题意给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。">
+<meta name="keywords" content="概率期望,动态规划">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[UVA11440] Help Tomisu">
-<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;11&#x2F;28&#x2F;UVA11440&#x2F;index.html">
+<meta property="og:title" content="[CF235B] Let&#39;s Play Osu!">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2020&#x2F;12&#x2F;24&#x2F;CF235B&#x2F;index.html">
 <meta property="og:site_name" content="Skirt&#39;s Blog">
-<meta property="og:description" content="题意给你两个数$N,M (\leq 10^7, N-M\leq 10^5)$，求从2到$N!$有多少个数所有素因子都大于$M$。">
+<meta property="og:description" content="题意给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-11-30T00:17:46.613Z">
+<meta property="og:updated_time" content="2020-12-24T20:09:03.215Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://mrskirt.cc/2020/11/28/UVA11440/">
+<link rel="canonical" href="http://mrskirt.cc/2020/12/24/CF235B/">
 
 
 <script id="page-configurations">
@@ -70,7 +70,7 @@
   };
 </script>
 
-  <title>[UVA11440] Help Tomisu | Skirt's Blog</title>
+  <title>[CF235B] Let's Play Osu! | Skirt's Blog</title>
   
 
 
@@ -205,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/11/28/UVA11440/">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/12/24/CF235B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -218,7 +218,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [UVA11440] Help Tomisu
+          [CF235B] Let's Play Osu!
         </h1>
 
         <div class="post-meta">
@@ -227,16 +227,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-11-28 21:57:49" itemprop="dateCreated datePublished" datetime="2020-11-28T21:57:49-05:00">2020-11-28</time>
+              <time title="创建时间：2020-12-24 15:15:59 / 修改时间：15:09:03" itemprop="dateCreated datePublished" datetime="2020-12-24T15:15:59-05:00">2020-12-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-29 19:17:46" itemprop="dateModified" datetime="2020-11-29T19:17:46-05:00">2020-11-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -249,8 +243,8 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A2%98%E8%A7%A3/UVA/" itemprop="url" rel="index">
-                    <span itemprop="name">UVA</span>
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/Codeforces/" itemprop="url" rel="index">
+                    <span itemprop="name">Codeforces</span>
                   </a>
                 </span>
             </span>
@@ -273,13 +267,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你两个数$N,M (\leq 10^7, N-M\leq 10^5)$，求从2到$N!$有多少个数所有素因子都大于$M$。</p>
+        <h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给你$n$个顶点和$n-1$条边组成的链，其中每条边都有一个脆弱度$a_i$，表示这条边最多能被经过$a_i$次。问你从任何一个顶点开始最多能走多少步。</p>
 <a id="more"></a>
 
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>首先从所有素因子都大于$M$入手，一个显而易见的结论就是它一定由大于$M$的素数组成，也就是说每个素因子都与$M$以及小于$M$的数互质，那么也一定和$M!$互质。<br>那么有引理：一个非1的数与$M!$互质，当且仅当它的最小素因子大于$M$。<br>证明：反向显然，因为$M!$没有任何一个数能成为一个大于$M$的质数的约数。正向则说明这个数并不包含任何1到$M$的约数，那么这个数只能是一个质数，并且一定大于$M$，否则一定被$M!$包含。<br>于是我们只要求出$N!$内与$M!$互质的数，然后减去1就是答案了。</p>
-<p>由于$M!$是$N!$的约数，所以这里面一定有$\dfrac{N!}{M!}$个$M!$，对于每个$M!$，$\varphi(M!)$就是$M!$内与$M!$互质的数的个数，所以我们$N!$内与$M!$互质的数的个数为<br>$$<br>\varphi(M!)\dfrac{N!}{M!}<br>$$<br>预处理$\varphi(i!)$和阶乘即可$O(\log m)$回答每个询问。这题的模数是$10^8+7$，有点坑。</p>
-<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>预处理$O(10^7)$，回答$O(\log m)$。</p>
-<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> fact[MAXV], phif[MAXV];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> primes[MAXV / <span class="number">10</span>];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nop[MAXV];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fastExp</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> p, <span class="keyword">int</span> mod)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> t = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (p) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (p &amp; <span class="number">1</span>) t = (ll)t * a % mod;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        a = (ll)a * a % mod;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        p &gt;&gt;= <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> t;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> tot = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    fact[<span class="number">0</span>] = fact[<span class="number">1</span>] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= MAXV - <span class="number">5</span>; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">        fact[i] = (ll)fact[i - <span class="number">1</span>] * i % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!nop[i]) primes[++tot] = i;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= tot &amp;&amp; i * primes[j] &lt;= MAXV - <span class="number">5</span>; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">            nop[i * primes[j]] = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!(i % primes[j])) <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    phif[<span class="number">1</span>] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>, j = <span class="number">1</span>; i &lt;= MAXV - <span class="number">5</span>; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i == primes[j]) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">            phif[i] = (ll)phif[i - <span class="number">1</span>] * (i - <span class="number">1</span>) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">            j++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">        &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">            phif[i] = (ll)phif[i - <span class="number">1</span>] * i % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; m) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!(n + m)) <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> mul = (ll)fact[n] * fastExp(fact[m], MOD - <span class="number">2</span>, MOD) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">        mul = (mul + MOD) % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> c = (ll)phif[m] * mul % MOD;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; (c + MOD - <span class="number">1</span>) % MOD &lt;&lt; <span class="string">'\n'</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>前置：</p>
+<ul>
+<li>期望的线性性质：$E[aX+b] = aE[X]+b$。</li>
+<li>区别：$E[X^2]$和$E[X]^2$</li>
+</ul>
+<p>先考虑线性情况，即每$i$个连击贡献$i$分值的这种情况。<br>设$X_i$为经过$i$个操作的<strong>总分</strong>，那么$E[X_i]$经过$i$个操作的<strong>期望总分</strong>，对于第$i$个操作而言，如果成功了，那么总贡献就是上一次的期望总分+1，如果失败了那么总分就不变。求$E[X_i]$可以写成<br>$$<br>\begin{align}<br>E[X_i] &amp;= p_iE[X_{i-1}+1] + (1-p_i)E[X_{i-1}] \\<br>E[X_i] &amp;= p_iE[X_{i-1}] + p_i + E[X_{i-1}] - p_iE[X_{i-1}] \\<br>E[X_i] &amp;= E[X_{i-1}]+p_i<br>\end{align}<br>$$</p>
+<p>但是如果每个$i$连击贡献$i^2$个，那么此时对于期望总分的贡献就不能只是+1了。假设经过$i-1$号操作后的连击数为$Y_{i-1}$，那么$i$号操作成功它会对<strong>总分</strong>的贡献是$(Y_{i-1}+1)^2-Y_{i-1}^2 = 2Y_{i-1} + 1$。则对于<strong>期望总分</strong>的贡献是$E[2Y_{i-1} + 1]$。<br>根据期望的线性性质，我们需要求的就是$2E[Y_{i-1}] + 1$。<br>$E[Y_i]$翻译成人话就是<strong>经过$i$号操作后的连击数的期望</strong>，这个东西很好求。从$i-1$开始推，如果$i$成功，那么期望连击数就是$E[Y_i]+1$，如果失败直接变成0。于是有：<br>$$<br>E[Y_i] = p_i(E[Y_{i - 1}] + 1)<br>$$<br>于是我们可以事先求出$E[Y_i]$，然后应用到平方贡献里。设$Z_i$为经过$i$个操作以后的<strong>总分</strong>（此时使用的是连击数的平方)，那么所求就是$E[Z_i]$，即经过$i$个操作以后的<strong>期望总分</strong><br>$$<br>\begin{align}<br>E[Z_i] &amp;= p_i(E[Z_{i-1}+2Y_i+1]) + (1-p_i)E[Z_{i-1}]\\<br>E[Z_i] &amp;= E[Z_{i-1}] + p_i(2E[Y_i] + 1)<br>\end{align}<br>$$<br>那么$E[Z_n]$就是答案了。</p>
+<h1 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h1><p>假设每段长度为$i$的连击贡献$f(i)$的分数，那么设（我也不知道该用什么字母）$A_i$为为经过$i$个操作以后的<strong>总分</strong>，所求是$E[A_i]$<br>$$<br>E[A_i] = p_iE[A_{i-1} + f(Y_{i-1}+1)-f(Y_{i-1})] + (1-p_i)E[A_{i-1}]<br>$$</p>
+<p>搞清楚到底是总分还是总分的期望应该就是这道题最关键的一点了。</p>
+<h1 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h1><p>$O(n)$</p>
+<h1 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf"</span>, &amp;p[i]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        EN[i] = (EN[i - <span class="number">1</span>] + <span class="number">1</span>) * p[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">        E2[i] = E2[i - <span class="number">1</span>] + (<span class="number">2</span> * EN[i - <span class="number">1</span>] + <span class="number">1</span>) * p[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lf"</span>, E2[n]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
     </div>
 
     
@@ -288,7 +289,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+              <a href="/tags/%E6%A6%82%E7%8E%87%E6%9C%9F%E6%9C%9B/" rel="tag"># 概率期望</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
           </div>
 
         
@@ -297,13 +299,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/27/CSP-S-2020-T3/" rel="prev" title="[CSP-S 2020 T3] 函数调用">
-      <i class="fa fa-chevron-left"></i> [CSP-S 2020 T3] 函数调用
+    <a href="/2020/12/22/CF201C/" rel="prev" title="[CF201C] Fragile Bridges">
+      <i class="fa fa-chevron-left"></i> [CF201C] Fragile Bridges
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/11/29/UVA10214/" rel="next" title="[UVA10214] Trees in a Wood">
-      [UVA10214] Trees in a Wood <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -350,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题意"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时间复杂度"><span class="nav-number">3.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考代码"><span class="nav-number">4.</span> <span class="nav-text">参考代码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题意"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展"><span class="nav-number">3.</span> <span class="nav-text">拓展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考代码"><span class="nav-number">5.</span> <span class="nav-text">参考代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
