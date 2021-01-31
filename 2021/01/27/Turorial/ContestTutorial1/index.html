@@ -55,7 +55,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake1.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake2.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake3.png">
-<meta property="og:updated_time" content="2021-01-31T15:16:53.637Z">
+<meta property="og:updated_time" content="2021-01-31T15:23:45.991Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake1.png">
 
@@ -238,7 +238,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-31 10:16:53" itemprop="dateModified" datetime="2021-01-31T10:16:53-05:00">2021-01-31</time>
+                <time title="修改时间：2021-01-31 10:23:45" itemprop="dateModified" datetime="2021-01-31T10:23:45-05:00">2021-01-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +302,7 @@
 
 <hr>
 <h1 id="GYM-270074G-Mr-Skirt-and-Bubble-Sort"><a href="#GYM-270074G-Mr-Skirt-and-Bubble-Sort" class="headerlink" title="[GYM 270074G] Mr.Skirt and Bubble Sort"></a>[GYM 270074G] Mr.Skirt and Bubble Sort</h1><p><strong>Idea By：baobaobear</strong></p>
-<h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>给你一个包含$n(n\leq 2\times 10^5)$个数字的序列，可以随意对每个数取相反数，求形成逆序对个数最少是多少。</p>
+<h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>给你一个包含$n(n\leq 2\times 10^5)$个数字的序列，可以随意对每个数取相反数，求最少可以让这个序列有多少个逆序对。</p>
 <h2 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2><p>可以从按照绝对值大到小考虑每个数，对于绝对值最大的那个数，假设是 $a_i$，如果变成正数，那么 $|a_i|$ 一定是全局最大的数，剩下的数无论如何都不可能比它大，所以对逆序对的贡献即为下标大于 $i$ 的数的数量。</p>
 <p>反之，如果我们让 $a_i$ 变成负数，那么它一定是全局最小的数，它对逆序对的贡献就是下标小于 $i$ 的那些数，对于正负两种情况，我们贪心的取对逆序对贡献最小的那种情况即可，因为随后考虑的每个数都不会影响 $a_i$ 对逆序对的贡献。由于这个数对逆序对的贡献已经算完了，所以随后的数不能考虑 $a_i$ 的影响，即我们要把 $a_i$ 从序列中删除。我们可以用线段树或者树状数组来动态计算有多少个数下标大于/小于 $i$，具体见代码。</p>
 <p>注意一下如果有多个数绝对值相同的情况，此时我们需要先把绝对值相同的这些数先从序列中删去，再一个个统计贡献。</p>
