@@ -46,7 +46,7 @@
 </script>
 
   <meta name="description" content="质因数分解接着上一章的素数判定，这一章我们要讨论质因数分解的算法。  算数基本定理，又称唯一分解定理：每个大于$1$的自然数，都可以写成质数次方的积，且这些质数从小到大排列后，仅存在这一种分解方式。  换句话说，每个$n&amp;gt;1$，都有唯一一种分解方式$\prod_{k} p_k^{\alpha_k} &#x3D; n$。">
-<meta name="keywords" content="随机化,搜索,数论">
+<meta name="keywords" content="数论,随机化,搜索">
 <meta property="og:type" content="article">
 <meta property="og:title" content="质因数分解">
 <meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;31&#x2F;prime-factor&#x2F;index.html">
@@ -298,7 +298,7 @@
 <p>我们还需要一些常数优化，Pollard’s rho算法的瓶颈就在于需要多少次才能得到一个约数$p$，以及找不到约数的时候做$gcd$的时间。前者并不好优化（玄学），但是减少$gcd$的次数却是可以做到的。</p>
 <p>一个普遍的做法就是利用倍增的思想，先走完$2^k$步以后把$|a-b|$乘积统一进行$gcd$，然后换一个起点继续增加步数。如果出现乘积为$0$就说明我们遇到环了，此时退出并寻找下一个随机数。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    ll c = (ll)mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    ll s = <span class="number">0</span>, t = (ll)mt() % (x), val = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// i是步长</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>;; i &lt;&lt;= <span class="number">1</span>, s = t, val = <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">1</span>; z &lt;= i; z++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            t = f(t, c, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">            val = modmul(val, <span class="built_in">abs</span>(t - s), x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            <span class="comment">// 如果遇到环了</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!val) <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">            <span class="comment">// 为了避免步数过长导致出不来结果，所以手动设定每127步计算一次</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!(z % <span class="number">127</span>)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">                ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
     
@@ -307,9 +307,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
               <a href="/tags/%E9%9A%8F%E6%9C%BA%E5%8C%96/" rel="tag"># 随机化</a>
               <a href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag"># 搜索</a>
-              <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
           </div>
 
         
@@ -318,12 +318,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/31/prime-test/" rel="prev" title="素数判定">
-      <i class="fa fa-chevron-left"></i> 素数判定
+    <a href="/2019/12/25/CF1097D/" rel="prev" title="[CF1097D] Makoto and a Blackboard">
+      <i class="fa fa-chevron-left"></i> [CF1097D] Makoto and a Blackboard
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/01/20/eulersieve/" rel="next" title="数论筛法">
-      数论筛法 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/12/31/prime-test/" rel="next" title="素数判定">
+      素数判定 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -387,14 +387,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

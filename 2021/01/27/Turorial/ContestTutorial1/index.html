@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://mrskirt.cc').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="感谢出题&amp;amp;验题人@baobaobear的贡献">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第52回周末休闲赛部分题解">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2021&#x2F;01&#x2F;27&#x2F;Turorial&#x2F;ContestTutorial1&#x2F;index.html">
+<meta property="og:site_name" content="Skirt&#39;s Blog">
+<meta property="og:description" content="感谢出题&amp;amp;验题人@baobaobear的贡献">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake1.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake2.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake3.png">
+<meta property="og:updated_time" content="2021-01-31T03:04:50.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;cake1.png">
+
+<link rel="canonical" href="http://mrskirt.cc/2021/01/27/Turorial/ContestTutorial1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>第52回周末休闲赛部分题解 | Skirt's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Skirt's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">The secret of being a bore is to tell everything</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2021/01/27/Turorial/ContestTutorial1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DXTsT">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skirt's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第52回周末休闲赛部分题解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-27 20:04:29" itemprop="dateCreated datePublished" datetime="2021-01-27T20:04:29-05:00">2021-01-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-30 22:04:50" itemprop="dateModified" datetime="2021-01-30T22:04:50-05:00">2021-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index">
+                    <span itemprop="name">题解</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E8%A7%A3/%E5%8E%9F%E5%88%9B%E9%A2%98/" itemprop="url" rel="index">
+                    <span itemprop="name">原创题</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>感谢出题&amp;验题人@baobaobear的贡献</p>
+<a id="more"></a>
+<hr>
+<h1 id="GYM-270074F-Mr-Skirt-and-Cake"><a href="#GYM-270074F-Mr-Skirt-and-Cake" class="headerlink" title="[GYM 270074F] Mr.Skirt and Cake"></a>[GYM 270074F] Mr.Skirt and Cake</h1><p><strong>Idea By：裙子</strong></p>
+<h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>平面上给你$n(n\leq 2000)$个点，求只用一条直线，有多少种方法将这些点分成数量相等的两部分。</p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>如图所示，假设红色直线是一条能均分点集的直线</p>
+<p><img src="/images/cake1.png" alt="两点确定一条直线"></p>
+<p>那么我们可以把它看成是某两个点所确定的直线（图中 <strong>AB</strong> 所得直线）绕两点中间的某个位置旋转一个细微的角度得到。根据旋转的方向，我们可以使得这条线上的点中，<strong>A</strong> 以前的点和 <strong>B</strong> 以后的点分居两侧。于是我们可以得到一个朴素的 $O(n^3)$，即枚举两个点，然后暴力判断这条线是否能把点集分成两半。很可惜，由于 $n$ 可以达到2000，无法在时限内得出结果，我们需要使用更巧妙的方法。</p>
+<p>我们可以使用<strong>极角扫描</strong>这个技巧来降低复杂度，具体做法是枚举起始点，然后把剩下的点按照极角排序，然后我们按照相对于起始点的极角从小到大的扫过这些点，动态维护左右两边各有多少个点。由于本题存在多点共线的情况，方便起见，我们可以把扫描过程中极角相同的点都看作一个权值为 $w_i$ 的点，其中 $w_i$ 就是共线点的数量。这样统计两侧数量的时候我们只要统计两侧权值和就可以了。</p>
+<p>同时我们可以假设，在扫描线上起始点之前的点和之后的点分别属于两侧，这样就可以保证每次扫描的直线都只对结果贡献一次。</p>
+<p><img src="/images/cake2.png" alt="前后向的点"></p>
+<p>如图所示，点 <strong>E</strong> 可以看做在点 <strong>B</strong> 的后面，而点 <strong>A,F</strong> 在点 <strong>B</strong> 的前面，这种情况就等同于使用了图中的红线进行点集划分。如果我们的起始点是 <strong>A</strong>，那么左右侧就会反过来，根据题意这也算是一种不同划分方案。</p>
+<p><img src="/images/cake3.png" alt="划分直线"></p>
+<p>具体怎么用极角扫描维护两边的点数可以参考网上的教程或者下面的代码，不在本题解的范围内。</p>
+<h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>$O(n^2\log{n})$</p>
+<h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        Code
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> T <span class="title">read</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    T X = <span class="number">0</span>, w = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">char</span> ch = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">        w |= ch == <span class="string">'-'</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">        ch = getchar();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch)) X = (X &lt;&lt; <span class="number">3</span>) + (X &lt;&lt; <span class="number">1</span>) + (ch ^ <span class="number">48</span>), ch = getchar();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> w ? -X : X;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">5005</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXV = <span class="number">3</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n, m, k;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span> &#123;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    ll x, y, cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">double</span> rad;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    Point() = <span class="keyword">default</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    Point(<span class="keyword">int</span> x, <span class="keyword">int</span> y) : x(x), y(y) &#123;&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    Point <span class="keyword">operator</span>+(<span class="keyword">const</span> Point&amp; vec) <span class="keyword">const</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> Point(x + vec.x, y + vec.y);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    Point <span class="keyword">operator</span>-(<span class="keyword">const</span> Point&amp; vec) <span class="keyword">const</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> Point(x - vec.x, y - vec.y);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">static</span> ll <span class="title">cross</span><span class="params">(<span class="keyword">const</span> Point&amp; a, <span class="keyword">const</span> Point&amp; b)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> a.x * b.y - a.y * b.x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">static</span> ll <span class="title">dot</span><span class="params">(<span class="keyword">const</span> Point&amp; a, <span class="keyword">const</span> Point&amp; b)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> a.x * b.x + a.y * b.y;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">length</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> x * (<span class="keyword">double</span>)x + y * (<span class="keyword">double</span>)y; &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Point&amp; B) <span class="keyword">const</span> &#123; <span class="keyword">return</span> rad &lt; B.rad; &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">&#125;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">test</span><span class="params">(<span class="keyword">const</span> Point&amp; a, <span class="keyword">const</span> Point&amp; b)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">    ll d = Point::cross(a, b);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> (d == <span class="number">0</span> &amp;&amp; Point::dot(a, b) &gt; <span class="number">0</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">Point pts[MAXN];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">51</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">52</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">53</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">54</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">55</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">56</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">57</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">58</span></pre></td><td class="code"><pre><span class="line">        pts[i].x = read&lt;ll&gt;();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">59</span></pre></td><td class="code"><pre><span class="line">        pts[i].y = read&lt;ll&gt;();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">60</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">61</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (n &amp; <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">62</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"0\n"</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">63</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">64</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">65</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (n == <span class="number">2</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">66</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">printf</span>(<span class="string">"2\n"</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">67</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">68</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">69</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">70</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Point&gt; cur, tmp;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">71</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">72</span></pre></td><td class="code"><pre><span class="line">        cur.clear();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">73</span></pre></td><td class="code"><pre><span class="line">        tmp.clear();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">74</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">75</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (j != i) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">76</span></pre></td><td class="code"><pre><span class="line">                tmp.push_back(pts[j] - pts[i]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">77</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">78</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">79</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; p : tmp) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">80</span></pre></td><td class="code"><pre><span class="line">            p.rad = <span class="built_in">atan2</span>(p.y, p.x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">81</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">82</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 极角排序</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">83</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">std</span>::sort(tmp.begin(), tmp.end());</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">84</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> sz = tmp.size();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">85</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">86</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">87</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 把极角相同的点看成一个整体</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">88</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; sz; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">89</span></pre></td><td class="code"><pre><span class="line">            cnt++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">90</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (j == sz - <span class="number">1</span> || !test(tmp[j], tmp[j + <span class="number">1</span>])) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">91</span></pre></td><td class="code"><pre><span class="line">                tmp[j].cnt = cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">92</span></pre></td><td class="code"><pre><span class="line">                cur.push_back(tmp[j]);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">93</span></pre></td><td class="code"><pre><span class="line">                cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">94</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">95</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">96</span></pre></td><td class="code"><pre><span class="line">        sz = cur.size();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">97</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">98</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 维护直线两侧的权值</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">99</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>, r = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">100</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> cntL = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">101</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">while</span> (l &lt; sz) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">102</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (l == r) r = (r + <span class="number">1</span>) % sz;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">103</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">while</span> (l != r &amp;&amp; Point::cross(cur[l], cur[r]) &gt; <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">104</span></pre></td><td class="code"><pre><span class="line">                cntL += cur[r].cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">105</span></pre></td><td class="code"><pre><span class="line">                r = (r + <span class="number">1</span>) % sz;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">106</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">107</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (cntL + cur[l].cnt == n / <span class="number">2</span>) ans++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">108</span></pre></td><td class="code"><pre><span class="line">            l++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">109</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (Point::cross(cur[l - <span class="number">1</span>], cur[l]) &gt; <span class="number">0</span>) cntL -= cur[l].cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">110</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">111</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">112</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, ans);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">113</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">114</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<hr>
+<h1 id="GYM-270074G-Mr-Skirt-and-Bubble-Sort"><a href="#GYM-270074G-Mr-Skirt-and-Bubble-Sort" class="headerlink" title="[GYM 270074G] Mr.Skirt and Bubble Sort"></a>[GYM 270074G] Mr.Skirt and Bubble Sort</h1><p><strong>Idea By：baobaobear</strong></p>
+<h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>给你一个包含$n(n\leq 2\times 10^5)$个数字的序列，可以随意对每个数取相反数，求形成逆序对个数最少是多少。</p>
+<h2 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2><p>可以从按照绝对值大到小考虑每个数，对于绝对值最大的那个数，假设是 $a_i$，如果变成正数，那么 $|a_i|$ 一定是全局最大的数，剩下的数无论如何都不可能比它大，所以对逆序对的贡献即为下标大于 $i$ 的数的数量。</p>
+<p>反之，如果我们让 $a_i$ 变成负数，那么它一定是全局最小的数，它对逆序对的贡献就是下标小于 $i$ 的那些数，对于正负两种情况，我们贪心的取对逆序对贡献最小的那种情况即可，因为随后考虑的每个数都不会影响 $a_i$ 对逆序对的贡献。由于这个数对逆序对的贡献已经算完了，所以随后的数不能考虑 $a_i$ 的影响，即我们要把 $a_i$ 从序列中删除。我们可以用线段树或者树状数组来动态计算有多少个数下标大于/小于 $i$，具体见代码。</p>
+<h2 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>$O(n\log{n})$</p>
+<h2 id="参考代码-1"><a href="#参考代码-1" class="headerlink" title="参考代码"></a>参考代码</h2><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        Code
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">int</span> N&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">FenwickTree</span> &#123;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    FenwickTree() &#123;&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">(<span class="keyword">int</span> t, T x)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = t; i &lt;= N; i += lowbit(i)) _arr[i] += x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">inline</span> T <span class="title">getSum</span><span class="params">(<span class="keyword">int</span> t)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        T s = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = t; i; i -= lowbit(i)) s += _arr[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> s;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    T _arr[N + <span class="number">5</span>];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x &amp; (-x); &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">&#125;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">FenwickTree&lt;<span class="keyword">int</span>, MAXN - <span class="number">5</span>&gt; tree;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;pii&gt; nodes;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> x = read&lt;<span class="keyword">int</span>&gt;();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">        nodes.push_back(&#123;<span class="built_in">std</span>::<span class="built_in">abs</span>(x), i&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">        tree.increase(i, <span class="number">1</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::sort(nodes.rbegin(), nodes.rend());</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    ll ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> sz = nodes.size();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">        ++cnt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// 注意考虑绝对值相等的多个数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (i == sz - <span class="number">1</span> || nodes[i].first != nodes[i + <span class="number">1</span>].first) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i - cnt + <span class="number">1</span>; j &lt;= i; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">                tree.increase(nodes[j].second, <span class="number">-1</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i - cnt + <span class="number">1</span>; j &lt;= i; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">int</span> greater = tree.getSum(n) - tree.getSum(nodes[j].second);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">int</span> smaller = tree.getSum(nodes[j].second - <span class="number">1</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">                ans += <span class="built_in">std</span>::min(greater, smaller);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">            cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, ans);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<hr>
+<h1 id="GYM-270074H-Mr-Skirt-and-Marksman-Easy-Version"><a href="#GYM-270074H-Mr-Skirt-and-Marksman-Easy-Version" class="headerlink" title="[GYM 270074H] Mr. Skirt and Marksman (Easy Version)"></a>[GYM 270074H] Mr. Skirt and Marksman (Easy Version)</h1><p><strong>Idea By：裙子</strong></p>
+<h2 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h2><p>你可以从原点发射一个速度大小为 $x$ 的向量，问能否在 $10^6$ 秒内击中一个初始位置为 <strong>B</strong> ，且以速度向量 <strong>V</strong> 匀速移动的物体。</p>
+<h2 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h2><p>本题有多种解法，但是在这之前，要先把边界条件判掉，由于发射速度，敌人移动速度可能是0，所以要先处理这种情况，之后就是判断能否有一个向量在规定时间内追上敌人。<br>这个判断有两种解法，且精度都比较优秀：</p>
+<h3 id="公式法"><a href="#公式法" class="headerlink" title="公式法"></a>公式法</h3><p>设发射向量为 <strong>S</strong> ，由题意可列出方程：<br>$$<br>t\textbf{S} = \textbf{B} + t\textbf{V}<br>$$<br>两边同时平方<br>$$<br>(t\textbf{S})^2 = (\textbf{B} + t\textbf{V})^2<br>$$<br>等等！为什么这个式子是对的，距离的平方相等不代表这两个向量就在一个点上。但是注意，我们只限制了发射速度，但是发射方向可以任意选取，所以只要距离是相等的，我们就认为向正确的方向发射了向量。</p>
+<p>于是接下来我们移项，然后展开公式<br>$$<br>\begin{align}<br>(t\textbf{S})^2 - (\textbf{B} + t\textbf{V})^2 &amp;= 0 \\<br>t^2\textbf{S}^2 - (\textbf{B}^2 + 2t\textbf{B} \circ \textbf{V}+ t^2\textbf{V}^2) &amp;= 0 \\<br>(\textbf{S}^2 - \textbf{V}^2)t^2 - (2\textbf{B} \circ \textbf{V})t - \textbf{B}^2 &amp;= 0<br>\end{align}<br>$$<br>这里向量的平方就是与自己的<strong>点积</strong>，$\textbf{B} \circ \textbf{V}$ 代表 <strong>B</strong> 和 <strong>V</strong> 的点积。于是这个式子就变成了一个一元二次方程，解出$t$然后判断是否有大于等于0且小于等于 $10^6$ 的解即可。</p>
+<p>无解的情况也很好处理，只要看看判别式是否小于0即可。值得注意的是 $(\textbf{S}^2 - \textbf{V}^2) = 0$ 的情况，此时整个方程变成一次方程，直接得出答案即可。</p>
+<h4 id="时间复杂度-2"><a href="#时间复杂度-2" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>$O(q)$</p>
+<h4 id="参考代码-2"><a href="#参考代码-2" class="headerlink" title="参考代码"></a>参考代码</h4><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        Code
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">onRay</span><span class="params">(ll Bx, ll By, ll Vx, ll Vy)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (Vx == <span class="number">0</span> || Vy == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> -By * Vx == -Bx * Vy &amp;&amp; (-Bx * Vx &gt;= <span class="number">0</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    ll Bx, By, Vx, Vy;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; Bx &gt;&gt; By &gt;&gt; Vx &gt;&gt; Vy;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    ll x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; x;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (Bx == <span class="number">0</span> &amp;&amp; By == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 弹幕不能动就要判定是否会撞上原点了</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (x == <span class="number">0</span>) <span class="keyword">return</span> onRay(Bx, By, Vx, Vy);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    ll a = x * x - Vx * Vx - Vy * Vy;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    ll b = <span class="number">-2L</span>L * (Bx * Vx + By * Vy);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    ll c = -(Bx * Bx + By * By);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    ll delta = b * b - <span class="number">4L</span>L * a * c;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (delta &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (a == <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!b || -c * b &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">        <span class="comment">// t = -c / b;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> -c &lt;= <span class="number">1000000</span> * b;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 方程有两个解的情况</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">double</span> t0 = (-b - <span class="built_in">std</span>::<span class="built_in">sqrt</span>(delta)) / (<span class="number">2.0</span> * a);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">double</span> t1 = (-b + <span class="built_in">std</span>::<span class="built_in">sqrt</span>(delta)) / (<span class="number">2.0</span> * a);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (t0 &lt; <span class="number">0</span> &amp;&amp; t1 &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (t1 &lt; t0) <span class="built_in">std</span>::swap(t0, t1);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (t0 &lt; <span class="number">0</span>) <span class="keyword">return</span> t1 &lt;= <span class="number">1e6</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCALLL</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">    freopen(<span class="string">"out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::ios::sync_with_stdio(<span class="literal">false</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">cin</span>.tie(<span class="literal">nullptr</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> m;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; m;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (m--) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (solve()) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"YES\n"</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">        &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"NO\n"</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<h3 id="三分法"><a href="#三分法" class="headerlink" title="三分法"></a>三分法</h3><p>我们可以对时间进行三分，设函数 $f(t)$ 为在 $t$ 时刻，最优发射向量与敌人的位置的距离平方大小。这个最优发射向量的方向很明显是从原点朝向 $\textbf{B} + t\textbf{V}$ 这个位置。</p>
+<p>从上一个方法的公式我们可以推出这个函数是存在一些局部最低点的，如果这个点存在且值为0，并且在 $[0, 10^6]$ 这个范围内那么就是有解的。幸运的是，虽然这个函数可能存在多个局部最低点，但是只有值为0的局部最低点能出现多次，所以找到的任意一个局部最低点都可以确定是否有解。剩下的工作就是用三分法找这个局部最低点了，这道题我特意放宽了精度限制，只要距离小于 $10^{-3}$ 我们就可以认为有解然后跳出了。</p>
+<p>值得注意的是，如果函数 $f(t)$ 的返回值是<strong>距离</strong>大小而不是<strong>距离平方</strong>我也放过了，但是使用距离作为指标因为使用了<code>sqrt</code>函数，所以精度比较差，如果时间是$10^9$可能就过不了了。</p>
+<p>本题精度限制放的很宽，基本上只要方向对了就能过。</p>
+<h4 id="时间复杂度-3"><a href="#时间复杂度-3" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>$O(q\log{\varepsilon^{-1}})$</p>
+<h4 id="参考代码-3"><a href="#参考代码-3" class="headerlink" title="参考代码"></a>参考代码</h4><p>baobaobear大佬的写法</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        Code
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">get_dis</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> vx, <span class="keyword">int</span> vy, <span class="keyword">int</span> v, <span class="keyword">double</span> d)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">double</span> dx = x + vx * d, dy = y + vy * d;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> dx * dx + dy * dy - d * d * v * v;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">fastio</span> &#123;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">        fastio() &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">            <span class="built_in">cin</span>.tie(<span class="number">0</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">            ios::sync_with_stdio(<span class="number">0</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    &#125; fio;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> t;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">cin</span> &gt;&gt; t;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (t--) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> x, y, vx, vy, v;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">double</span> ld = <span class="number">0</span>, rd = <span class="number">1e6</span>, md = <span class="number">10</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">cin</span> &gt;&gt; x &gt;&gt; y &gt;&gt; vx &gt;&gt; vy &gt;&gt; v;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (v == <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (x * vy - y * vx == <span class="number">0</span> &amp;&amp; (vx != <span class="number">0</span> || vy != <span class="number">0</span>) &amp;&amp; (vx != <span class="number">0</span> &amp;&amp; vx * x &lt; <span class="number">0</span> || vy != <span class="number">0</span> &amp;&amp; vy * y &lt; <span class="number">0</span>)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">                <span class="built_in">cout</span> &lt;&lt; <span class="string">"YES"</span> &lt;&lt; <span class="built_in">endl</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">continue</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">            &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">                <span class="built_in">cout</span> &lt;&lt; <span class="string">"NO"</span> &lt;&lt; <span class="built_in">endl</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">continue</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">bool</span> ok = <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">double</span> eps = <span class="number">1e-3</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (get_dis(x, y, vx, vy, v, rd) &lt;= eps)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">            ok = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!ok) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">while</span> (rd &gt; <span class="number">1e-6</span> &amp;&amp; (rd - ld) / rd &gt; <span class="number">1e-6</span>) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">double</span> md1 = (rd - ld) / <span class="number">5</span> * <span class="number">2</span> + ld, md2 = rd - (rd - ld) / <span class="number">5</span> * <span class="number">2</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">double</span> d1 = get_dis(x, y, vx, vy, v, md1), d2 = get_dis(x, y, vx, vy, v, md2);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">if</span> (d1 &lt;= eps || d2 &lt;= eps) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">                    ok = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">                    <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">                &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">if</span> (d1 &lt; d2) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">                    rd = md2;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">                &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">                    ld = md1;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line">                &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">51</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">52</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">53</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (ok) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">54</span></pre></td><td class="code"><pre><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"YES"</span> &lt;&lt; <span class="built_in">endl</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">55</span></pre></td><td class="code"><pre><span class="line">        &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">56</span></pre></td><td class="code"><pre><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"NO"</span> &lt;&lt; <span class="built_in">endl</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">57</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">58</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">59</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">60</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+    </div>
+</div>                                                                            
+
+<p>对于题目有任何问题欢迎提出</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/19/MinimumCircle/" rel="prev" title="最小圆覆盖问题">
+      <i class="fa fa-chevron-left"></i> 最小圆覆盖问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GYM-270074F-Mr-Skirt-and-Cake"><span class="nav-number">1.</span> <span class="nav-text">[GYM 270074F] Mr.Skirt and Cake</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题意"><span class="nav-number">1.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题解"><span class="nav-number">1.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间复杂度"><span class="nav-number">1.3.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考代码"><span class="nav-number">1.4.</span> <span class="nav-text">参考代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GYM-270074G-Mr-Skirt-and-Bubble-Sort"><span class="nav-number">2.</span> <span class="nav-text">[GYM 270074G] Mr.Skirt and Bubble Sort</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题意-1"><span class="nav-number">2.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题解-1"><span class="nav-number">2.2.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间复杂度-1"><span class="nav-number">2.3.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考代码-1"><span class="nav-number">2.4.</span> <span class="nav-text">参考代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GYM-270074H-Mr-Skirt-and-Marksman-Easy-Version"><span class="nav-number">3.</span> <span class="nav-text">[GYM 270074H] Mr. Skirt and Marksman (Easy Version)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题意-2"><span class="nav-number">3.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题解-2"><span class="nav-number">3.2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公式法"><span class="nav-number">3.2.1.</span> <span class="nav-text">公式法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度-2"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考代码-2"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">参考代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三分法"><span class="nav-number">3.2.2.</span> <span class="nav-text">三分法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度-3"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考代码-3"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">参考代码</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DXTsT"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DXTsT</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CXUtk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CXUtk" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/36956" title="洛谷 → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;36956" rel="noopener" target="_blank"><i class="fa fa-fw fa-code"></i>洛谷</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2237367067&website=www.oicqzone.com" title="QQ → tencent:&#x2F;&#x2F;AddContact&#x2F;?fromId&#x3D;45&amp;fromSubId&#x3D;1&amp;subcmd&#x3D;all&amp;uin&#x3D;2237367067&amp;website&#x3D;www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.flandre.info/" title="http:&#x2F;&#x2F;blog.flandre.info" rel="noopener" target="_blank">北海若</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://oierwanhong.cc/" title="https:&#x2F;&#x2F;oierwanhong.cc&#x2F;" rel="noopener" target="_blank">万弘</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://baobaobear.github.io/" title="https:&#x2F;&#x2F;baobaobear.github.io" rel="noopener" target="_blank">抱抱熊</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DXTsT</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>

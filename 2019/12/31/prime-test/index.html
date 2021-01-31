@@ -46,7 +46,7 @@
 </script>
 
   <meta name="description" content="定义：对于一个大于$1$的正整数$p$，如果$p$是质数&#x2F;素数，那么对于所有$a|p$，$a$要么是$1$，要么是$p$。  那么对于一个数$x$，我们如何让计算机去判定它是不是质数&#x2F;素数呢？">
-<meta name="keywords" content="搜索,数论">
+<meta name="keywords" content="数论,搜索">
 <meta property="og:type" content="article">
 <meta property="og:title" content="素数判定">
 <meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2019&#x2F;12&#x2F;31&#x2F;prime-test&#x2F;index.html">
@@ -311,7 +311,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">modmul</span><span class="params">(ll a, ll b, ll p)</span> </span>&#123; <span class="keyword">return</span> (<span class="keyword">__int128_t</span>)a * (<span class="keyword">__int128_t</span>)b % p; &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">fastExp</span><span class="params">(ll x, ll p, ll mod)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    x %= mod;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    ll ans = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (p) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (p &amp; <span class="number">1</span>) ans = modmul(ans, x, mod);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        x = modmul(x, x, mod);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        p &gt;&gt;= <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> ans;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">miller_rabin</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (x == <span class="number">2</span> || x == <span class="number">3</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">2</span> || !(x &amp; <span class="number">1</span>)) <span class="keyword">return</span> <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    ll <span class="built_in">pow</span> = <span class="number">0</span>, u = x - <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> (!(u &amp; <span class="number">1</span>)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">pow</span>++;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        u &gt;&gt;= <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> p = primes[i];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (p &gt;= x) <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">        ll v = fastExp(p, u, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (v == <span class="number">1</span> || v == x - <span class="number">1</span>) <span class="keyword">continue</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> (; j &lt; <span class="built_in">pow</span>; j++) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">            v = modmul(v, v, x);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (v == x - <span class="number">1</span>) <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (j == <span class="built_in">pow</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 
 <p>例题：<a href="https://loj.ac/problem/143" target="_blank" rel="noopener">质数判定</a></p>
-
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
     
@@ -320,8 +320,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag"># 搜索</a>
               <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+              <a href="/tags/%E6%90%9C%E7%B4%A2/" rel="tag"># 搜索</a>
           </div>
 
         
@@ -330,12 +330,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/25/CF1097D/" rel="prev" title="[CF1097D] Makoto and a Blackboard">
-      <i class="fa fa-chevron-left"></i> [CF1097D] Makoto and a Blackboard
+    <a href="/2019/12/31/prime-factor/" rel="prev" title="质因数分解">
+      <i class="fa fa-chevron-left"></i> 质因数分解
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/12/31/prime-factor/" rel="next" title="质因数分解">
-      质因数分解 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/01/20/eulersieve/" rel="next" title="数论筛法">
+      数论筛法 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -399,14 +399,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
