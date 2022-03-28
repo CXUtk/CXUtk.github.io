@@ -232,7 +232,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-30 05:57:17" itemprop="dateModified" datetime="2021-01-30T05:57:17+08:00">2021-01-30</time>
+                <time title="修改时间：2022-03-28 20:14:18" itemprop="dateModified" datetime="2022-03-28T20:14:18+08:00">2022-03-28</time>
               </span>
 
           
@@ -246,11 +246,97 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>欢迎，这里是DXTsT，又名小裙子。<br>这个博客用来记录一些算法，研究，黑科技等等，反正就是杂七杂八的东西。<br>在别的地方写过的文章，都会陆续搬到这里来，包括fs49.org（太懒了）</p>
+          <p>欢迎，这里是DXTsT，又名小裙子。<br>这个博客里包含：算法、图形学、数学等方面的研究以及知识总结。<br>欢迎对其中内容进行评论，或者加我讨论。</p>
 <h3 id="注意，本博客的所有题解代码都不保证能够直接提交AC，只是截取了部分核心代码，能不能AC还是要靠自己！"><a href="#注意，本博客的所有题解代码都不保证能够直接提交AC，只是截取了部分核心代码，能不能AC还是要靠自己！" class="headerlink" title="注意，本博客的所有题解代码都不保证能够直接提交AC，只是截取了部分核心代码，能不能AC还是要靠自己！"></a>注意，本博客的所有题解代码都不保证能够直接提交AC，只是截取了部分核心代码，能不能AC还是要靠自己！</h3><p>开幕雷击，吓到了吗？</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/12/04/hello-world/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2022/03/28/TCS/StrongCC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="DXTsT">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skirt's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/28/TCS/StrongCC/" class="post-title-link" itemprop="url">强联通分量分解算法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-28 19:02:14 / 修改时间：22:11:37" itemprop="dateCreated datePublished" datetime="2022-03-28T19:02:14+08:00">2022-03-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">图论</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="强联通分量定义"><a href="#强联通分量定义" class="headerlink" title="强联通分量定义"></a>强联通分量定义</h1><blockquote>
+<p><strong>定义1.</strong>（强联通）：我们说有向图中两个顶点 $u, v$ 是强联通的当且仅当存在一条有向路径从 $u$ 到 $v$，同时也存在一条有向路径从 $v$ 到 &gt; $u$。一个顶点和自己也是强联通的。<br><strong>定义2.</strong>（强联通图）：我们说有向图 $G$ 是强联通图当且仅当图中任何一对顶点都是强联通的。<br><strong>定义3.</strong>（强联通分量）：对于任意有向图 $G$，我们将 $G$ 中任意一个极大强联通子图称为 $G$ 的强联通分量。</p>
+</blockquote>
+<p>什么是极大强联通子图？其实就是说对于一个强联通子图，我们往其中增加任何额外的顶点都会使该子图失去强联通性质，也就是符合强联通性质的一个最大顶点集合。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/28/TCS/StrongCC/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -305,7 +391,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-31 23:23:45" itemprop="dateModified" datetime="2021-01-31T23:23:45+08:00">2021-01-31</time>
+                <time title="修改时间：2022-03-28 19:57:10" itemprop="dateModified" datetime="2022-03-28T19:57:10+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -982,95 +1068,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2020/12/02/CF/CFEDU99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
-      <meta itemprop="name" content="DXTsT">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Skirt's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/02/CF/CFEDU99/" class="post-title-link" itemprop="url">Educational Codeforces Round 99 选解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-02 13:15:30" itemprop="dateCreated datePublished" datetime="2020-12-02T13:15:30+08:00">2020-12-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-05 04:34:49" itemprop="dateModified" datetime="2020-12-05T04:34:49+08:00">2020-12-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index">
-                    <span itemprop="name">题解</span>
-                  </a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A2%98%E8%A7%A3/Codeforces/" itemprop="url" rel="index">
-                    <span itemprop="name">Codeforces</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Problem-A"><a href="#Problem-A" class="headerlink" title="Problem A"></a>Problem A</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>可以把$g(x)=\dfrac{x}{f(f(x))}$看成$x$除以去掉前后缀的0以后的数，由于$x$没有前导0，所以只会去掉后缀0。<br>考虑每个1到$n$的$x$，一般情况下$f(f(x))=x$，当$x$是$10^k$的倍数时，得到$f(f(x))=\dfrac{x}{10^k}$，所以$g(x)=10^k$。于是我们只需要知道1到$n$有多少个$10^k$，$k$互不相同，也就是$n$有多少位数。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/02/CF/CFEDU99/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1121,20 +1118,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1187,7 +1184,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

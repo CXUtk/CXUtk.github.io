@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://mrskirt.cc').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="强联通分量定义 定义1.（强联通）：我们说有向图中两个顶点 $u, v$ 是强联通的当且仅当存在一条有向路径从 $u$ 到 $v$，同时也存在一条有向路径从 $v$ 到 &amp;gt; $u$。一个顶点和自己也是强联通的。定义2.（强联通图）：我们说有向图 $G$ 是强联通图当且仅当图中任何一对顶点都是强联通的。定义3.（强联通分量）：对于任意有向图 $G$，我们将 $G$ 中任意一个极大强联通子图称为">
+<meta name="keywords" content="强连通分量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强联通分量分解算法">
+<meta property="og:url" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;2022&#x2F;03&#x2F;28&#x2F;TCS&#x2F;StrongCC&#x2F;index.html">
+<meta property="og:site_name" content="Skirt&#39;s Blog">
+<meta property="og:description" content="强联通分量定义 定义1.（强联通）：我们说有向图中两个顶点 $u, v$ 是强联通的当且仅当存在一条有向路径从 $u$ 到 $v$，同时也存在一条有向路径从 $v$ 到 &amp;gt; $u$。一个顶点和自己也是强联通的。定义2.（强联通图）：我们说有向图 $G$ 是强联通图当且仅当图中任何一对顶点都是强联通的。定义3.（强联通分量）：对于任意有向图 $G$，我们将 $G$ 中任意一个极大强联通子图称为">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;SCC_Kosar1.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;SCC_Kosar2.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;SCC_Kosar3.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;SCC_Kosar4.png">
+<meta property="og:updated_time" content="2022-03-28T14:11:37.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;mrskirt.cc&#x2F;images&#x2F;SCC_Kosar1.png">
+
+<link rel="canonical" href="http://mrskirt.cc/2022/03/28/TCS/StrongCC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>强联通分量分解算法 | Skirt's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Skirt's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">The secret of being a bore is to tell everything</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://mrskirt.cc/2022/03/28/TCS/StrongCC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="DXTsT">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Skirt's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强联通分量分解算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-28 19:02:14 / 修改时间：22:11:37" itemprop="dateCreated datePublished" datetime="2022-03-28T19:02:14+08:00">2022-03-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">图论</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="强联通分量定义"><a href="#强联通分量定义" class="headerlink" title="强联通分量定义"></a>强联通分量定义</h1><blockquote>
+<p><strong>定义1.</strong>（强联通）：我们说有向图中两个顶点 $u, v$ 是强联通的当且仅当存在一条有向路径从 $u$ 到 $v$，同时也存在一条有向路径从 $v$ 到 &gt; $u$。一个顶点和自己也是强联通的。<br><strong>定义2.</strong>（强联通图）：我们说有向图 $G$ 是强联通图当且仅当图中任何一对顶点都是强联通的。<br><strong>定义3.</strong>（强联通分量）：对于任意有向图 $G$，我们将 $G$ 中任意一个极大强联通子图称为 $G$ 的强联通分量。</p>
+</blockquote>
+<p>什么是极大强联通子图？其实就是说对于一个强联通子图，我们往其中增加任何额外的顶点都会使该子图失去强联通性质，也就是符合强联通性质的一个最大顶点集合。</p>
+<a id="more"></a>
+
+<p>我们可以看出来（证明略），对于任何一个有向图 $G$，它的强联通分量们之间不会重叠，于是我们可以认为，一个有向图的所有强联通分量顶点集合的并就是 $G$ 的所有顶点。反过来说就是，一个有向图可以拆分成多个互不重叠的强联通分量。</p>
+<p>而今天要介绍的就是将这个有向图的强联通分量分解出来的算法，即强联通分量分解算法。本篇主要介绍两个算法：Kosaraju 算法和 Tarjan 算法。</p>
+<hr>
+<h1 id="Kosaraju-算法"><a href="#Kosaraju-算法" class="headerlink" title="Kosaraju 算法"></a>Kosaraju 算法</h1><p>Kosaraju 算法分解强联通分量是通过两次 DFS 实现的。第一次 DFS 负责给原图的顶点标号，这里我们要用后序遍历的方式给顶点标号，即先访问子节点，再对当前节点标号。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kosaraju_dfs1</span><span class="params">(<span class="keyword">int</span> u)</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    vis[u] = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> v : G.V[u])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!vis[v])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">            kosaraju_dfs1(v);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    order.push_back(u);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>第二次 DFS 我们要在反图上按照之前标号<strong>从大到小</strong>的顺序对顶点执行 DFS， 我们要标记当前顶点所能到达的所有顶点，此时，这些被标记的顶点和当前顶点组成的顶点集合就是一个强联通分量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kosaraju_dfs2</span><span class="params">(<span class="keyword">int</span> u)</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    vis[u] = <span class="literal">true</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    visited.push_back(u);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> v : GRev.V[u])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> (!vis[v])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            kosaraju_dfs2(v);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>这个算法有这么几个奇怪的地方：</p>
+<ol>
+<li>为什么要使用后序遍历标号，而不是前序遍历？</li>
+<li>为什么需要建反图？</li>
+</ol>
+<p>为了回答这几个问题，我们需要再重新看一下强联通分量的定义，同时证明这个算法是正确的。</p>
+<hr>
+<h1 id="Kosaraju-算法正确性"><a href="#Kosaraju-算法正确性" class="headerlink" title="Kosaraju 算法正确性"></a>Kosaraju 算法正确性</h1><p>假设我们有一个强连通分量，其中两个顶点 $A, B$。根据定义，$A$ 一定在正向图有一条路径到 $B$，同时 $A$ 也一定在反向图上有一条路径到 $B$。</p>
+<p><img src="/images/SCC_Kosar1.png" width="80%" height="80%"></img><br><img src="/images/SCC_Kosar2.png" width="80%" height="80%"></img></p>
+<p>这个结论是很显然的，但是我们可以更进一步：</p>
+<blockquote>
+<p><strong>引理1.</strong> 顶点 $A$ 在正图和反图都能访问到的顶点和构成了顶点 $A$ 所在的强连通分量。</p>
+</blockquote>
+<p>证明很显然，正图和反图都能访问意味着互相之间存在有向路径，那它必和 $A$ 强连通，同时根据强连通性质的传递性，这些顶点必然也互相之间强连通。因此，得到的顶点集合为原有向图的强连通子图，并且不存在其他顶点也能和 $A$ 强连通了，所以该顶点集合为原图的强连通分量。</p>
+<p>有了这个引理以后，我们可以得到一个简易的算法求出强连通分量，即对于每一个顶点，找出其正图和反图都能访问到的顶点集合，然后将其标记为同一强连通分量。但是这个算法时间复杂度略高，可以达到 $O(N^2+NM)$ 级别，所以我们需要更快的做法。</p>
+<p>Kosaraju 算法所使用的 DFS 序就是为了减少判定所需要的操作数量。那么怎么判重呢？我们先分析一下正图和反图都会访问到哪些顶点：</p>
+<ol>
+<li>正图和反图都访问到的顶点，很明显它是强连通分量中的顶点</li>
+<li>正图访问到但是反图没有访问到的节点，即下图橙色区域的顶点</li>
+<li>正图没有访问到但是反图访问到了，即下图绿色区域的顶点</li>
+</ol>
+<p><img src="/images/SCC_Kosar3.png" width="80%" height="80%"></img></p>
+<p>对于第二种情况，我们可以在反图上把它消掉，因为反图从 $A$ 出发无法访问到这部分顶点。但是对于第三种情况，我们就没法这样消除了，但是这也是 Kosaraju 算法聪明的地方。如果在反图上从 $A$ 出发，我们必然会访问到绿色区域，但是假如我们已经把绿色区域的强联通分量们都算完了呢？</p>
+<p>在反图上，如果我们的 DFS 访问是从绿色区域开始的，那么绿色区域计算完成以后是无法到达顶点 $A$ 所在的强联通分量的，也就不会导致 $A$ 所在的强联通分量被错误的计算。由此我们可以得出，绿色区域的计算应该比顶点 $A$ 所在的区域提前，或者说，我们的计算顺序应该是原图的拓扑序。</p>
+<p>然而，原图并不一定是个 DAG，所以也并不一定存在拓扑序，但是如果我们把环看成一个顶点，把环上顶点的出边和入边都加在这个顶点上（即缩点操作）以后，得到的这个图就是一个 DAG 了（见下图），所以我们是完全可以按照正确的顺序去计算强联通分量的。那么现在就是那个诡异的后序遍历标号派上用场的时候了。</p>
+<p><img src="/images/SCC_Kosar4.png" width="50%" height="50%"></img></p>
+<blockquote>
+<p><strong>引理2.</strong> 一个图中后序遍历标号最大的顶点所在的强连通分量一定在缩点后的 DAG 没有入度。</p>
+</blockquote>
+<p>假设一个有向图中后续遍历标号最大的顶点 $x$ 所在的强连通分量在 DAG 中存在入度，那么其上游节点要么已经搜索过，要么还没搜索。如果已经搜索过，但是没有访问过 $x$，根据 DFS 定义，下游顶点的编号一定小于上游顶点编号，所以条件不成立。如果没有被搜索过，那么上游顶点还没有标号，下一次搜索必将导致标号大于 $x$，所以 $x$ 所在强连通分量必定不存在上游顶点。</p>
+<p>由此我们可以进行一个过程：先在反图中计算正图后序遍历标号最大的顶点所能访问到的顶点，并且将其合并成一个强连通分量，因为顶点不存在入度，所以没有绿色区域，我们得到的是个正确的强连通分量。然后把这部分顶点从图中移除。此时，剩下的图相当于原缩点后 DAG 移除掉一个没有入度的顶点。新的图中标号最高的顶点必然也是没有入度的，我们可以继续这个过程。不难发现，最终我们相当于在缩点后的图中进行了一次拓扑排序，每次在反图计算能访问到的顶点的时候，我们都把绿色区域移除了，所以每次计算的强连通分量都是正确的，由此可得最终算出的强连通分量分解也是正确的。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F/" rel="tag"># 强连通分量</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/27/Turorial/ContestTutorial1/" rel="prev" title="第52回周末休闲赛部分题解">
+      <i class="fa fa-chevron-left"></i> 第52回周末休闲赛部分题解
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+  <div class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="CXUtk/CXUtk.github.io"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+  </div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#强联通分量定义"><span class="nav-number">1.</span> <span class="nav-text">强联通分量定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kosaraju-算法"><span class="nav-number">2.</span> <span class="nav-text">Kosaraju 算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kosaraju-算法正确性"><span class="nav-number">3.</span> <span class="nav-text">Kosaraju 算法正确性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DXTsT"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">DXTsT</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CXUtk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CXUtk" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.luogu.com.cn/user/36956" title="洛谷 → https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;user&#x2F;36956" rel="noopener" target="_blank"><i class="fa fa-fw fa-code"></i>洛谷</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2237367067&website=www.oicqzone.com" title="QQ → tencent:&#x2F;&#x2F;AddContact&#x2F;?fromId&#x3D;45&amp;fromSubId&#x3D;1&amp;subcmd&#x3D;all&amp;uin&#x3D;2237367067&amp;website&#x3D;www.oicqzone.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.flandre.info/" title="http:&#x2F;&#x2F;blog.flandre.info" rel="noopener" target="_blank">北海若</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://oierwanhong.cc/" title="https:&#x2F;&#x2F;oierwanhong.cc&#x2F;" rel="noopener" target="_blank">万弘</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://baobaobear.github.io/" title="https:&#x2F;&#x2F;baobaobear.github.io" rel="noopener" target="_blank">抱抱熊</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DXTsT</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+</body>
+</html>
