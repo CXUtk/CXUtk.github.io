@@ -47,6 +47,7 @@
 </blockquote>
 <p>假设一个有向图中后续遍历标号最大的顶点 $x$ 所在的强连通分量在 DAG 中存在入度，那么其上游节点要么已经搜索过，要么还没搜索。如果已经搜索过，但是没有访问过 $x$，根据 DFS 定义，下游顶点的编号一定小于上游顶点编号，所以条件不成立。如果没有被搜索过，那么上游顶点还没有标号，下一次搜索必将导致标号大于 $x$，所以 $x$ 所在强连通分量必定不存在上游顶点。</p>
 <p>由此我们可以进行一个过程：先在反图中计算正图后序遍历标号最大的顶点所能访问到的顶点，并且将其合并成一个强连通分量，因为顶点不存在入度，所以没有绿色区域，我们得到的是个正确的强连通分量。然后把这部分顶点从图中移除。此时，剩下的图相当于原缩点后 DAG 移除掉一个没有入度的顶点。新的图中标号最高的顶点必然也是没有入度的，我们可以继续这个过程。不难发现，最终我们相当于在缩点后的图中进行了一次拓扑排序，每次在反图计算能访问到的顶点的时候，我们都把绿色区域移除了，所以每次计算的强连通分量都是正确的，由此可得最终算出的强连通分量分解也是正确的。</p>
+<p>由此我们可以看到 Kosaraju 算法和缩点后的 DAG 图有相当大的联系。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
         <category>算法</category>
@@ -259,8 +260,8 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>概率期望</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -527,8 +528,8 @@
         <category>牛客网</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>概率期望</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -587,9 +588,9 @@
         <category>Codeforces</category>
       </categories>
       <tags>
-        <tag>概率</tag>
         <tag>动态规划</tag>
         <tag>数论</tag>
+        <tag>概率</tag>
       </tags>
   </entry>
   <entry>
@@ -749,6 +750,43 @@
       </tags>
   </entry>
   <entry>
+    <title>质因数分解</title>
+    <url>/2019/12/31/prime-factor/</url>
+    <content><![CDATA[<h1 id="质因数分解"><a href="#质因数分解" class="headerlink" title="质因数分解"></a>质因数分解</h1><p>接着上一章的素数判定，这一章我们要讨论质因数分解的算法。</p>
+<blockquote>
+<p>算数基本定理，又称唯一分解定理：每个大于$1$的自然数，都可以写成质数次方的积，且这些质数从小到大排列后，仅存在这一种分解方式。</p>
+</blockquote>
+<p>换句话说，每个$n&gt;1$，都有唯一一种分解方式$\prod_{k} p_k^{\alpha_k} = n$。</p>
+<a id="more"></a>
+<h2 id="朴素方法"><a href="#朴素方法" class="headerlink" title="朴素方法"></a>朴素方法</h2><p>对于所有$p|n$，我们不断试除就可以了，与质数判定同理，我们不需要试超过$\sqrt{n}$的质数，因为这样的质数一定就是$n$本身，于是有代码：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">map</span>&lt;ll, ll&gt; factorize(ll x) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">map</span>&lt;ll, ll&gt; pcnt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (ll i = <span class="number">2</span>; i * i &lt;= x; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (x % i == <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">while</span> (x % i == <span class="number">0</span>) cnt++, x /= i;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            pcnt[i] = cnt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// 注意要把最后一个质数包括进去</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">1</span>) pcnt[x] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> pcnt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>注意我们可以直接在$n$上面做除法，而不用真的遍历到$\sqrt{n}$，因为发现一个质因数就可以把数据规模缩小，可以用哈希表把$log$消掉。这样，在最坏情况下这个算法时间复杂度是$O(\sqrt{n})$。当然，如果先把所有质数预处理出来，可以达到$O(\sqrt{\frac{n}{\log{n}}})$。</p>
+<h2 id="Pollard’s-rho-算法"><a href="#Pollard’s-rho-算法" class="headerlink" title="Pollard’s rho 算法"></a>Pollard’s rho 算法</h2><h3 id="生日悖论-Birthday-Paradox"><a href="#生日悖论-Birthday-Paradox" class="headerlink" title="生日悖论 (Birthday Paradox)"></a>生日悖论 (Birthday Paradox)</h3><p>在介绍Pollard’s rho算法之前，我想先介绍一个概率学中的小问题：一个房间中要有多少人，出现两个人生日相同的概率大于等于$50\%$？</p>
+<p>如果你是第一次看到这个问题，那么答案可能会让你惊讶：只需要$23$个人。这不是玄学，而是通过严谨的数学推理得出的，实验也证明了这一点。那么这个结果是如何得到的呢？</p>
+<p>假设一年有$365$天，且每个人的生日是独立且均匀分布的，那么第一个人在第$x$天生日的概率是$\frac{1}{365}$，我们记为$Pr\{b_1=x\}$。那么现在来了第二个人，它的生日在第$x$天的概率$Pr\{b_2=x\}$也是$\frac{1}{365}$，此时两个人都在第$x$天的概率是<br>$$<br>Pr\{b_1=x \textbf{ and } b_2=x\} = \frac{1}{365^2}<br>$$<br>但是这个$x$我们可以取$365$个，于是两个人生日都在同一天的概率就是<br>$$<br>Pr\{b_1=b_2\} = 365\times \frac{1}{365^2} = \frac{1}{365}<br>$$<br>知道了任意两人生日相同的概率，就可以扩展到$k$个人中的两人生日相同的期望值，由于$k$个人中选$2$个，所以有:<br>$$<br>E = {k\choose2} \frac{1}{365} = \frac{k(k-1)}{730}<br>$$<br>所以期望存在至少一对生日相同的两人只需要$k=28$，$50\%$概率的计算由于比较复杂就不放上来了，但是可以推测，这个值一定会比$28$少。</p>
+<p>于是我们可以知道，生日碰撞的概率是$O(\sqrt{n})$级别的，而不是我们下意识的$O(n)$。</p>
+<h3 id="随机化算法"><a href="#随机化算法" class="headerlink" title="随机化算法"></a>随机化算法</h3><p>Pollard’s rho 算法的基本原理就是从待分解数$x$中任意找出两个数$a, b$，计算$gcd(|a - b|, x)$，当他们的$gcd$不是$1$的时候，我们就找到了$x$的一个因数。为什么是取两个呢？这就要利用我们上面说到的生日悖论了，因为只取一个$a$，此时$a|x$的几率很小，但是如果我们取两个数做差，出现$|a-b|$与$x$有公约数的几率就大很多了。事实上Pollard’s rho算法输出$x$的一个约数$p$的期望运行时间是$O(\sqrt{p})$。</p>
+<p>那么如何选取这两个数呢？我们可以随机选取，但是Pollard’s rho算法使用的是一种二次剩余系的伪随机数生成函数<br>$$<br>f(x) = x^2 + c \pmod{n}<br>$$<br>为什么用这个函数呢？我没有在算法导论上看到具体说明，但是这个函数应该是对于Pollard’s rho算法的时间效率最优的函数。由于这个函数最后一定会出现循环，长得像希腊字母$\rho$，因此得名。</p>
+<p><img src="/uploads/rho_cycle.jpg" width="30%" height="30%"></img><br>正因为这个性质，在出现环的时候我们也需要及时的退出并且换下一个随机数。我们可以使用Floyd判圈算法来判断是否出现了环，大意就是两个指针一个走一步一个走两步，如果有环那么两个指针一定会碰上，于是我们就可以有代码：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">f</span><span class="params">(ll x, ll c, ll p)</span> </span>&#123; <span class="keyword">return</span> (modmul(x, x, p) + c) % p; &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll c = mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll l = f(mt() % x, c, x), r = f(l, c, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// l是慢的指针，r是快的</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">while</span> (l != r) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        ll g = __gcd(<span class="built_in">abs</span>(l - r), x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        l = f(l, c, x), r = f(f(r, c, x), c, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+<p>如果$x$是个质数，那么我们可以用上一章的Miller–Rabin算法提前判掉，这样整个算法的期望时间复杂度就是$O(n^{0.25}\log{n})$了。</p>
+<h3 id="常数优化"><a href="#常数优化" class="headerlink" title="常数优化"></a>常数优化</h3><p>上面的写法虽然时间复杂度是正确的，但是对于这道题还是不够的：<br>例题：<a href="https://www.luogu.com.cn/problem/P4718" target="_blank" rel="noopener">【模板】Pollard-Rho算法</a></p>
+<p>我们还需要一些常数优化，Pollard’s rho算法的瓶颈就在于需要多少次才能得到一个约数$p$，以及找不到约数的时候做$gcd$的时间。前者并不好优化（玄学），但是减少$gcd$的次数却是可以做到的。</p>
+<p>一个普遍的做法就是利用倍增的思想，先走完$2^k$步以后把$|a-b|$乘积统一进行$gcd$，然后换一个起点继续增加步数。如果出现乘积为$0$就说明我们遇到环了，此时退出并寻找下一个随机数。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll c = (ll)mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll s = <span class="number">0</span>, t = (ll)mt() % (x), val = <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// i是步长</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>;; i &lt;&lt;= <span class="number">1</span>, s = t, val = <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">1</span>; z &lt;= i; z++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            t = f(t, c, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            val = modmul(val, <span class="built_in">abs</span>(t - s), x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 如果遇到环了</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!val) <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 为了避免步数过长导致出不来结果，所以手动设定每127步计算一次</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!(z % <span class="number">127</span>)) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>算法</category>
+        <category>数论</category>
+      </categories>
+      <tags>
+        <tag>数论</tag>
+        <tag>随机化</tag>
+        <tag>搜索</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>素数判定</title>
     <url>/2019/12/31/prime-test/</url>
     <content><![CDATA[<blockquote>
@@ -800,43 +838,6 @@
       </tags>
   </entry>
   <entry>
-    <title>质因数分解</title>
-    <url>/2019/12/31/prime-factor/</url>
-    <content><![CDATA[<h1 id="质因数分解"><a href="#质因数分解" class="headerlink" title="质因数分解"></a>质因数分解</h1><p>接着上一章的素数判定，这一章我们要讨论质因数分解的算法。</p>
-<blockquote>
-<p>算数基本定理，又称唯一分解定理：每个大于$1$的自然数，都可以写成质数次方的积，且这些质数从小到大排列后，仅存在这一种分解方式。</p>
-</blockquote>
-<p>换句话说，每个$n&gt;1$，都有唯一一种分解方式$\prod_{k} p_k^{\alpha_k} = n$。</p>
-<a id="more"></a>
-<h2 id="朴素方法"><a href="#朴素方法" class="headerlink" title="朴素方法"></a>朴素方法</h2><p>对于所有$p|n$，我们不断试除就可以了，与质数判定同理，我们不需要试超过$\sqrt{n}$的质数，因为这样的质数一定就是$n$本身，于是有代码：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">map</span>&lt;ll, ll&gt; factorize(ll x) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="built_in">map</span>&lt;ll, ll&gt; pcnt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (ll i = <span class="number">2</span>; i * i &lt;= x; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (x % i == <span class="number">0</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">while</span> (x % i == <span class="number">0</span>) cnt++, x /= i;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            pcnt[i] = cnt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// 注意要把最后一个质数包括进去</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">1</span>) pcnt[x] = <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> pcnt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<p>注意我们可以直接在$n$上面做除法，而不用真的遍历到$\sqrt{n}$，因为发现一个质因数就可以把数据规模缩小，可以用哈希表把$log$消掉。这样，在最坏情况下这个算法时间复杂度是$O(\sqrt{n})$。当然，如果先把所有质数预处理出来，可以达到$O(\sqrt{\frac{n}{\log{n}}})$。</p>
-<h2 id="Pollard’s-rho-算法"><a href="#Pollard’s-rho-算法" class="headerlink" title="Pollard’s rho 算法"></a>Pollard’s rho 算法</h2><h3 id="生日悖论-Birthday-Paradox"><a href="#生日悖论-Birthday-Paradox" class="headerlink" title="生日悖论 (Birthday Paradox)"></a>生日悖论 (Birthday Paradox)</h3><p>在介绍Pollard’s rho算法之前，我想先介绍一个概率学中的小问题：一个房间中要有多少人，出现两个人生日相同的概率大于等于$50\%$？</p>
-<p>如果你是第一次看到这个问题，那么答案可能会让你惊讶：只需要$23$个人。这不是玄学，而是通过严谨的数学推理得出的，实验也证明了这一点。那么这个结果是如何得到的呢？</p>
-<p>假设一年有$365$天，且每个人的生日是独立且均匀分布的，那么第一个人在第$x$天生日的概率是$\frac{1}{365}$，我们记为$Pr\{b_1=x\}$。那么现在来了第二个人，它的生日在第$x$天的概率$Pr\{b_2=x\}$也是$\frac{1}{365}$，此时两个人都在第$x$天的概率是<br>$$<br>Pr\{b_1=x \textbf{ and } b_2=x\} = \frac{1}{365^2}<br>$$<br>但是这个$x$我们可以取$365$个，于是两个人生日都在同一天的概率就是<br>$$<br>Pr\{b_1=b_2\} = 365\times \frac{1}{365^2} = \frac{1}{365}<br>$$<br>知道了任意两人生日相同的概率，就可以扩展到$k$个人中的两人生日相同的期望值，由于$k$个人中选$2$个，所以有:<br>$$<br>E = {k\choose2} \frac{1}{365} = \frac{k(k-1)}{730}<br>$$<br>所以期望存在至少一对生日相同的两人只需要$k=28$，$50\%$概率的计算由于比较复杂就不放上来了，但是可以推测，这个值一定会比$28$少。</p>
-<p>于是我们可以知道，生日碰撞的概率是$O(\sqrt{n})$级别的，而不是我们下意识的$O(n)$。</p>
-<h3 id="随机化算法"><a href="#随机化算法" class="headerlink" title="随机化算法"></a>随机化算法</h3><p>Pollard’s rho 算法的基本原理就是从待分解数$x$中任意找出两个数$a, b$，计算$gcd(|a - b|, x)$，当他们的$gcd$不是$1$的时候，我们就找到了$x$的一个因数。为什么是取两个呢？这就要利用我们上面说到的生日悖论了，因为只取一个$a$，此时$a|x$的几率很小，但是如果我们取两个数做差，出现$|a-b|$与$x$有公约数的几率就大很多了。事实上Pollard’s rho算法输出$x$的一个约数$p$的期望运行时间是$O(\sqrt{p})$。</p>
-<p>那么如何选取这两个数呢？我们可以随机选取，但是Pollard’s rho算法使用的是一种二次剩余系的伪随机数生成函数<br>$$<br>f(x) = x^2 + c \pmod{n}<br>$$<br>为什么用这个函数呢？我没有在算法导论上看到具体说明，但是这个函数应该是对于Pollard’s rho算法的时间效率最优的函数。由于这个函数最后一定会出现循环，长得像希腊字母$\rho$，因此得名。</p>
-<p><img src="/uploads/rho_cycle.jpg" width="30%" height="30%"></img><br>正因为这个性质，在出现环的时候我们也需要及时的退出并且换下一个随机数。我们可以使用Floyd判圈算法来判断是否出现了环，大意就是两个指针一个走一步一个走两步，如果有环那么两个指针一定会碰上，于是我们就可以有代码：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">f</span><span class="params">(ll x, ll c, ll p)</span> </span>&#123; <span class="keyword">return</span> (modmul(x, x, p) + c) % p; &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll c = mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll l = f(mt() % x, c, x), r = f(l, c, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// l是慢的指针，r是快的</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">while</span> (l != r) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        ll g = __gcd(<span class="built_in">abs</span>(l - r), x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        l = f(l, c, x), r = f(f(r, c, x), c, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-
-<p>如果$x$是个质数，那么我们可以用上一章的Miller–Rabin算法提前判掉，这样整个算法的期望时间复杂度就是$O(n^{0.25}\log{n})$了。</p>
-<h3 id="常数优化"><a href="#常数优化" class="headerlink" title="常数优化"></a>常数优化</h3><p>上面的写法虽然时间复杂度是正确的，但是对于这道题还是不够的：<br>例题：<a href="https://www.luogu.com.cn/problem/P4718" target="_blank" rel="noopener">【模板】Pollard-Rho算法</a></p>
-<p>我们还需要一些常数优化，Pollard’s rho算法的瓶颈就在于需要多少次才能得到一个约数$p$，以及找不到约数的时候做$gcd$的时间。前者并不好优化（玄学），但是减少$gcd$的次数却是可以做到的。</p>
-<p>一个普遍的做法就是利用倍增的思想，先走完$2^k$步以后把$|a-b|$乘积统一进行$gcd$，然后换一个起点继续增加步数。如果出现乘积为$0$就说明我们遇到环了，此时退出并寻找下一个随机数。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function">ll <span class="title">pollard_rho</span><span class="params">(ll x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll c = (ll)mt() % (x - <span class="number">1</span>) + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ll s = <span class="number">0</span>, t = (ll)mt() % (x), val = <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// i是步长</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>;; i &lt;&lt;= <span class="number">1</span>, s = t, val = <span class="number">1</span>) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">1</span>; z &lt;= i; z++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            t = f(t, c, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            val = modmul(val, <span class="built_in">abs</span>(t - s), x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 如果遇到环了</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!val) <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 为了避免步数过长导致出不来结果，所以手动设定每127步计算一次</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!(z % <span class="number">127</span>)) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        ll g = __gcd(val, x);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">1</span>) <span class="keyword">return</span> g;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>算法</category>
-        <category>数论</category>
-      </categories>
-      <tags>
-        <tag>数论</tag>
-        <tag>随机化</tag>
-        <tag>搜索</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>[CF1097D] Makoto and a Blackboard</title>
     <url>/2019/12/25/CF1097D/</url>
     <content><![CDATA[<h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>一开始有一个整数$n(n\leq 10^{15})$，你可以执行以下操作$k(k\leq 10^4)$次：把$n$替换成$n$的任意一个约数(包括$1$和$n$)，假设每个约数都有相同概率被选中。现在问你$k$次操作后剩下这个数的期望值是多少。</p>
@@ -860,9 +861,9 @@
         <category>Codeforces</category>
       </categories>
       <tags>
+        <tag>概率期望</tag>
         <tag>动态规划</tag>
         <tag>数论</tag>
-        <tag>概率期望</tag>
       </tags>
   </entry>
   <entry>
